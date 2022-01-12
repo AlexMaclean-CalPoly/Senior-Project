@@ -7,3 +7,7 @@ For this project I'm interested in addressing the voice code problem in the spee
 On the language design side of the problem, I'm interested in writing a language with voice in mind that can then be compiled into another high level language. Developing this language would require augmenting normal compilation with natural language processing and program synthesis. The surface syntaxes of existing languages are designed to be easy to type and looks good on a screen, but those are not the same concerns when designing a language for voice. A language for vocal programming might have new forms to specify programs in a less line-by-line manner, allow developers some leeway with regard to specific wording, or use a much less symbol heavy surface syntax.
 
 In short, I want to build a system that can be told something like "define a function factorial that takes an int n if n equals zero return one otherwise return n times factorial of n minus one." and produces a program in a language like Racket, JavaScript, or Python.
+
+## Contents
+
+* [Proposal](proposal/proposal.pdf)
