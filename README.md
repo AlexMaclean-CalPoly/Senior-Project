@@ -1,4 +1,4 @@
-# Senior Project
+# Senior Project: Vocal Programming
 
 ## Overall Goals (from [Proposal](proposal/proposal.pdf))
 
