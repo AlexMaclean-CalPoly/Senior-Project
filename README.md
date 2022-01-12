@@ -12,4 +12,4 @@ In short, I want to build a system that can be told something like "define a fun
 
 ## Contents
 
-* [Proposal](proposal/proposal.pdf)
+* **[Proposal](proposal/proposal.pdf)**
