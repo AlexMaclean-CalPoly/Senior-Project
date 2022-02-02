@@ -1,0 +1,91 @@
+(
+	(<s> find a father and bird </s>)
+	(<s> by the father and bird </s>)
+	(<s> by enough of a thing bird </s>)
+)
+(
+	(<s> king now i'm andy </s>)
+	(<s> king i'm andy </s>)
+	(<s> king and i'm andy </s>)
+)
+(
+	(<s> the now mont </s>)
+	(<s> the na mont </s>)
+	(<s> the nom mont </s>)
+)
+(
+	(<s> potion be </s>)
+	(<s> whoa should be </s>)
+	(<s> ocean be </s>)
+)
+(
+	(<s> nom injured division </s>)
+	(<s> phnom injured division </s>)
+	(<s> nom into division </s>)
+)
+(
+	(<s> oh there are under our didn't </s>)
+	(<s> other under our didn't </s>)
+	(<s> oh they're under our didn't </s>)
+)
+(
+	(<s> i convert </s>)
+	(<s> convert </s>)
+	(<s> a convert </s>)
+)
+(
+	(<s> both </s>)
+)
+(
+	(<s> quotient and be </s>)
+	(<s> question can be </s>)
+	(<s> quotient can be </s>)
+)
+(
+	(<s> quotient is prudent zero </s>)
+	(<s> quotient is driven zero </s>)
+	(<s> quotient is proven zero </s>)
+)
+(
+	(<s> else and easter </s>)
+	(<s> als and easter </s>)
+	(<s> house and easter </s>)
+)
+(
+	(<s> turn of the digits </s>)
+	(<s> turned other digits </s>)
+	(<s> turn other digits </s>)
+)
+(
+	(<s> to floss </s>)
+	(<s> floss </s>)
+)
+(
+	(<s> ah ah </s>)
+	(<s> ah </s>)
+)
+(
+	(<s> oh car </s>)
+	(<s> car </s>)
+	(<s> a car </s>)
+)
+(
+	(<s> of the dude </s>)
+	(<s> both the dude </s>)
+	(<s> oh the dude </s>)
+)
+(
+	(<s> at last </s>)
+	(<s> the last </s>)
+	(<s> last </s>)
+)
+(
+	(<s> forty eight it digit </s>)
+	(<s> forty eight eight it digit </s>)
+	(<s> forty eight eight digit </s>)
+)
+(
+	(<s> greater than ten </s>)
+	(<s> great event ten </s>)
+	(<s> freer than ten </s>)
+)
