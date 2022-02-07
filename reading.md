@@ -26,6 +26,7 @@
 - https://microsoft.github.io/language-server-protocol/specification
 - https://langserver.org/
 - https://github.com/theia-ide/racket-language-server
+- https://github.com/neoclide/coc.nvim/wiki/Language-servers#racket
 
 
 

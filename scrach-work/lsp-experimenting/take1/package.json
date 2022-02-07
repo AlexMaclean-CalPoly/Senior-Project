@@ -1,0 +1,22 @@
+{
+  "name": "lsp-experimenting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "path": "^0.12.7",
+    "typescript": "^4.5.5",
+    "vscode": "^1.1.37",
+    "vscode-languageclient": "^7.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "lint": "eslint ./client/src ./server/src --ext .ts,.tsx",
+    "postinstall": "cd client && npm install && cd ../server && npm install && cd .."
+  },
+  "author": "",
+  "license": "ISC"
+}
