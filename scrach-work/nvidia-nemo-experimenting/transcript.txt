@@ -1,0 +1,5 @@
+this is a test to find a function convert taking numb and b let digits be
+nammadbi lek quotient b num iniger division b let other underbarred digits
+convert of quoten n b if quotun is greater than zero else empty sting return
+other digits plus a car of digit plus forty eight digit is greater than ten
+ else fifty five
