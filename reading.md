@@ -23,8 +23,13 @@
 
 ### Language Servers
 - https://code.visualstudio.com/api/language-extensions/language-server-extension-guide
+- https://microsoft.github.io/language-server-protocol/specification
+- https://langserver.org/
+- https://github.com/theia-ide/racket-language-server
+
 
 
 ### More Speech Recognition Options
 - https://pypi.org/project/dragonfly2/#introduction
 - https://dragonfly2.readthedocs.io/en/latest/
+- https://colab.research.google.com/github/NVIDIA/NeMo/blob/stable/tutorials/asr/Offline_ASR.ipynb
