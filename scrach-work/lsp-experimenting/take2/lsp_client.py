@@ -67,14 +67,13 @@ class LspClient:
         return {'uri': uri}
 
     def completion(self, document_id, line, character):
-        response = self._send_request("textDocument/completion", {
+        return self._send_request("textDocument/completion", {
             "textDocument": document_id,
             "position": {
                 "line": line,
                 "character": character
             }
         })
-        print("comp", response)
 
     def _send_notification(self, method, params=None):
         self._send(method, params, None)
