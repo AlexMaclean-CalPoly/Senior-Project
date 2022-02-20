@@ -2,15 +2,16 @@ import json
 import os
 import re
 import subprocess
-from pathlib import PurePath
 from collections import defaultdict
+from pathlib import PurePath
+
 
 class LspConnection:
-    def __init__(self, shell_args):
+    def __init__(self, shell_args: list[str]):
         self.process = subprocess.Popen(shell_args, stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE)
 
-    def send(self, message):
+    def send(self, message: dict):
         json_message = json.dumps(message)
         content_length = len(json_message)
         self.process.stdin.write(f'Content-Length: {content_length}\r\n\r\n{json_message}'.encode())
@@ -33,7 +34,7 @@ class LspConnection:
 
 
 class LspClient:
-    def __init__(self, connection, root: PurePath):
+    def __init__(self, connection: LspConnection, root: PurePath):
         self.connection = connection
         self.root = root
         self.id = 1
@@ -55,7 +56,7 @@ class LspClient:
     def exit(self):
         self._send_notification("exit")
 
-    def did_open(self, document_path, lang_id, text):
+    def did_open(self, document_path, lang_id: str, text: str):
         uri = self.root.joinpath(document_path).as_uri()
         self._send_notification("textDocument/didOpen", {
             "textDocument": {
@@ -67,7 +68,7 @@ class LspClient:
         })
         return {'uri': uri}
 
-    def did_change(self, document_id, text):
+    def did_change(self, document_id, text: str):
         self.version_counter[document_id['uri']] += 1
         self._send_notification("textDocument/didChange", {
             "textDocument": document_id | {'version': self.version_counter[document_id['uri']]},
@@ -78,7 +79,7 @@ class LspClient:
             ]
         })
 
-    def completion(self, document_id, line, character):
+    def completion(self, document_id, line: int, character: int):
         return self._send_request("textDocument/completion", {
             "textDocument": document_id,
             "position": {
@@ -96,7 +97,7 @@ class LspClient:
         self._send(method, params, message_id)
         return self._get_response(message_id)
 
-    def _send(self, method: str, params, message_id):
+    def _send(self, method: str, params: dict, message_id):
         message = {
             "jsonrpc": "2.0",
             "method": method
@@ -119,4 +120,3 @@ class LspClient:
             self.messages[message['id']] = message
         else:
             self.messages[None].append(message)
-

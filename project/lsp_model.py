@@ -1,7 +1,5 @@
-
 import os
 from pathlib import PurePath
-
 
 from lsp_client import LspClient, LspConnection
 
@@ -16,13 +14,11 @@ class LspModel:
         self.lang_client.initialize()
         self.doc_id = self.lang_client.did_open('buffer', PYTHON_LANG_ID, '')
 
-
-    def get_completions(self, text) -> list[str]:
+    def get_completions(self, text: str) -> list[str]:
         self.lang_client.did_change(self.doc_id, text)
         response = self.lang_client.completion(self.doc_id, 0, len(text))
         results = [r['insertText'] for r in response['result']['items']]
         return results
-
 
     def quit(self) -> None:
         self.lang_client.shutdown()
