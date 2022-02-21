@@ -16,6 +16,4 @@ RUN cd NeMo && bash scripts/asr_language_modeling/ngram_lm/install_beamsearch_de
 
 COPY . .
 
-RUN python build_setup.py
-
-CMD [ "python", "./baseline.py", "test-audio-2.wav" ]
+CMD [ "python", "./asr.py", "test-audio-2.wav" ]
