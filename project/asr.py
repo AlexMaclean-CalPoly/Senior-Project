@@ -1,59 +1,36 @@
-import re
 import nemo.collections.asr as nemo_asr
 import numpy as np
-import librosa
-import os
+
+import lsp_model
 from beam_search import beam_search
 
 
-# (Scorer)
-class SneakyCustomScorer:
-    def __init__(self, scorer) -> None:
-        self.scorer = scorer
+def basic_transcribe(audio_file):
+    ctc_output, alphabet = run_ctc_model(audio_file)
+    lm = lsp_model.Model()
 
-    def get_log_cond_prob(self, arg):
-        print(arg)
-        return self.scorer.get_log_cond_prob(arg)
+    result = beam_search(
+        ctc=ctc_output,
+        lm=lm,
+        alphabet=alphabet,
+        beam_width=16,
+        alpha=2,
+        beta=1.5,
+    )  # beam_width=25, alpha=0.30, beta=5
 
-    def get_sent_log_prob(self, arg):
-        print(arg)
-        return self.scorer.get_sent_log_prob(arg)
+    print(result)
+
+
+def run_ctc_model(audio_file):
+    asr_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name='QuartzNet15x5Base-En', strict=False)
+    logits = asr_model.transcribe([audio_file], logprobs=True)[0]
+
+    return softmax(logits), list(asr_model.decoder.vocabulary)
 
 
 def softmax(logits):
     e = np.exp(logits - np.max(logits))
     return e / e.sum(axis=-1).reshape([logits.shape[0], 1])
-
-
-def run_ctc_model(audio_file):
-    asr_model = nemo_asr.models.EncDecCTCModel.from_pretrained(model_name='QuartzNet15x5Base-En', strict=False)
-
-    logits = asr_model.transcribe([audio_file], logprobs=True)[0]
-    return softmax(logits)
-
-
-def basic_transcribe(audio_file):
-    ctc_output = run_ctc_model(audio_file)
-
-    result = beam_search(
-        ctc=ctc_output,
-
-        #vocab=list(asr_model.decoder.vocabulary),
-        k=16, # beam_width
-        alpha=2,
-        beta=1.5,
-        )
-
-    print(result)
-
-        #lm_path='lowercase_3-gram.pruned.1e-7.arpa',
-
-
-    # new_scorer = SneakyCustomScorer(beam_search_lm.scorer)
-    # beam_search_lm.scorer = new_scorer
-
-    # o = beam_search_lm.forward(log_probs=np.expand_dims(probs, axis=0), log_probs_length=None)
-
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
 import os
 from pathlib import PurePath
 
-from lsp_client import LspClient, LspConnection
-
 import kenlm
+
+from lsp_client import LspClient, LspConnection
 
 PYTHON_LSP = ['python3', '-mpylsp']
 PYTHON_LANG_ID = 'python'
@@ -24,6 +24,9 @@ class LspModel:
         results = [r['insertText'] for r in response['result']['items']]
         return results
 
+    def score(self, prefix):
+        return 1
+
     def quit(self) -> None:
         self.lang_client.shutdown()
         self.lang_client.exit()
@@ -34,12 +37,12 @@ class Model:
         self.n_gram_model = kenlm.Model(KEN_LM_PATH)
         self.lsp_model = LspModel()
 
-
-    def score(self):
-        n_gram_score = self.n_gram_model.score('this is a sentence .', bos=True, eos=True)
-        print(n_gram_score)
+    def __call__(self, prefix):
+        n_gram_score = 10 ** self.n_gram_model.score(prefix, eos=False)
+        lsp_score = self.lsp_model.score(prefix)
+        return (n_gram_score + lsp_score) / 2
 
 
 if __name__ == "__main__":
     m = Model()
-    m.score()
+    m('this is a test')
