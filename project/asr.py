@@ -13,12 +13,15 @@ def basic_transcribe(audio_file):
         ctc=ctc_output,
         lm=lm,
         alphabet=alphabet,
-        beam_width=16,
-        alpha=2,
+        beam_width=30,
+        alpha=5,
         beta=1.5,
+        prune=0.0000000000000001
     )  # beam_width=25, alpha=0.30, beta=5
 
     print(result)
+    print(lm.lsp_model.cache)
+    lm.quit()
 
 
 def run_ctc_model(audio_file):

@@ -71,7 +71,7 @@ class LspClient:
     def did_change(self, document_id, text: str):
         self.version_counter[document_id['uri']] += 1
         self._send_notification("textDocument/didChange", {
-            "textDocument": document_id | {'version': self.version_counter[document_id['uri']]},
+            "textDocument": {'version': self.version_counter[document_id['uri']], **document_id},
             "contentChanges": [
                 {
                     "text": text

@@ -41,6 +41,7 @@ def beam_search(ctc, lm, alphabet, beam_width=25, alpha=0.30, beta=5, prune=0.00
 
     # STEP 2: Iterations and pruning
     for t in range(1, timestep_count):
+        print(f"{t}/{timestep_count}")
         pruned_alphabet = [alphabet[i] for i in np.where(ctc[t] > prune)[0]]
         for l in A_prev:
 
