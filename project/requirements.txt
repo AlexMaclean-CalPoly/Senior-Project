@@ -1,2 +1,4 @@
-#torch==1.10.2
 Cython
+python-lsp-server[all]
+kenlm @ https://github.com/kpu/kenlm/archive/master.zip
+nemo_toolkit[all]
