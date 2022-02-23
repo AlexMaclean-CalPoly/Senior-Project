@@ -7,7 +7,7 @@ from pathlib import PurePath
 
 
 class LspConnection:
-    def __init__(self, shell_args: list[str]):
+    def __init__(self, shell_args: list):
         self.process = subprocess.Popen(shell_args, stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE)
 
