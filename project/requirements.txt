@@ -1,4 +1,6 @@
-Cython
-python-lsp-server[all]
-kenlm @ https://github.com/kpu/kenlm/archive/master.zip
-nemo_toolkit[all]
+
+numpy~=1.21.5
+kenlm~=0.0.0
+requests~=2.22.0
+docutils~=0.17.1
+tqdm~=4.62.3
