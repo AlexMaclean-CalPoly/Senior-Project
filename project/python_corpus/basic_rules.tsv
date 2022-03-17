@@ -1,0 +1,21 @@
+:	colon
+=	equals
+""""	double quote
+'	quote
+'	single quote
++	plus
+*	star
+*	times
+-	minus
+-	dash
+/	slash
+/	divide
+!	bang
+_	under bar
+_	under score
+,	comma
+.	dot
+\	back slash
+<NEWLINE>	next
+<INDENT>	then
+<DEDENT>	after

@@ -1,0 +1,50 @@
+:	colon
+=	equals
++	plus
+*	star
+*	times
+-	minus
+-	dash
+/	slash
+/	divide
+!	bang
+,	comma
+.	dot
+\	back slash
+(	open paren
+)	close paren
+[	open bracket
+]	close bracket
+;	semi colon
+|	v bar
+&	ampersand
+<	less
+<	less than
+>	greater
+>	greater than
+%	percent
+{	open brace
+}	close brace
+==	equal equal
+!=	not equal
+<=	less equal
+>=	greater equal
+~	tilde
+^	circumflex
+^	carat
+<<	left shift
+<<	shift left
+<<	l shift
+>>	right shift
+>>	shift right
+>>	r shift
+**	double star
+**	star star
++=	plus equals
+-=	minus equals
+*=	star equals
+*=	times equals
+//	double slash
+@	at
+->	right arrow
+->	r arrow
