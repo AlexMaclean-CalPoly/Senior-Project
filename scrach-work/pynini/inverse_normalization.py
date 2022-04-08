@@ -5,10 +5,6 @@ from classify import PyClassifyFst
 from verbalizer import PyVerbalizer
 
 
-def select_tag(lattice: 'pynini.FstLike') -> str:
-    tagged_text = pynini.shortestpath(lattice, nshortest=1, unique=True).string()
-    return tagged_text
-
 
 class PyInverseNormalizer:
     def __init__(self):
@@ -18,7 +14,7 @@ class PyInverseNormalizer:
 
     def inverse_normalize(self, text: str, verbose: bool = False) -> str:
         lattice = self.find_tags(text)
-        tagged_text = select_tag(lattice)
+        tagged_text = self.select_tag(lattice)
         if verbose:
             print(tagged_text)
         self.parser(tagged_text)
@@ -26,5 +22,10 @@ class PyInverseNormalizer:
         return self.verbalizer.verbalize(tokens)
 
     def find_tags(self, text: str) -> 'pynini.FstLike':
-        lattice = text @ self.tagger.fst
+        lattice = pynini.compose(text, self.tagger.fst)
         return lattice
+
+    def select_tag(self, lattice: 'pynini.FstLike') -> str:
+        lattice_stack = pynini.pdt_expand(pynini.project(lattice, 'output'), parens=self.tagger.parens)
+        tagged_text = pynini.shortestpath(lattice_stack, nshortest=1, unique=True).string()
+        return tagged_text

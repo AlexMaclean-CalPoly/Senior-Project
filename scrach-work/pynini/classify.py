@@ -1,4 +1,5 @@
 import csv
+from threading import stack_size
 import tokenize
 
 import pynini
@@ -22,20 +23,22 @@ class PyClassifyFst:
     def __init__(self):
         cardinal = CardinalFst()
         remove_and(cardinal)
+
         number = NumberFst(cardinal=cardinal)
         symbol = SymbolFst()
         basic = BasicFst(number=number, symbol=symbol)
         string = StringFst(basic=basic)
         name = NameFst(cardinal=cardinal)
 
-        number_token = token(tokenize.NUMBER, number.fst)
-        string_token = token(tokenize.STRING, string.fst)
+        stack_stuff = StackStuff(symbol=symbol)
+        self.parens = stack_stuff.parens
 
         import_stmt = ImportStmtFst(name=name)
 
+        exp_graph = ExpressionFst(number=number, string=string, name=name, stack_stuff=stack_stuff)
         stmt_fst = import_stmt.fst
 
-        self.fst = string_token
+        self.fst = exp_graph.fst
 
 
 class SymbolFst:
@@ -62,7 +65,6 @@ class SymbolFst:
         return result
 
 
-
 class NumberFst:
     def __init__(self, cardinal: CardinalFst):
         decimal_graph = DecimalFst(cardinal).graph
@@ -74,6 +76,7 @@ class NumberFst:
             delete_space + pynini.cross("point", ".") + delete_space + decimal_graph, 0, 1)
 
         self.fst = optional_minus_graph + cardinal.graph_no_exception + optional_decimal_graph
+        self.token = token(tokenize.NUMBER, self.fst)
 
 
 class NameFst:
@@ -86,7 +89,8 @@ class NameFst:
             '_') + bars
 
         word = pynini.closure(NOT_SPACE, lower=1)
-        word = (pynini.project(word, "input") - 'bar') @ word
+        word = dont_accep(word, 'bar')
+        word = pynutil.add_weight(word, 10)
 
         g = (bars +
         pynini.union(word + pynini.closure(mid_bar + word), single_bar) +
@@ -102,9 +106,9 @@ class BasicFst:
         symbol_graph = symbol.fst
         word_graph = pynini.closure(NOT_SPACE, lower=1)
 
-        token = (pynutil.add_weight(number_graph, 0.9) |
-                 pynutil.add_weight(symbol_graph, 0.9) |
-                 pynutil.add_weight(word_graph, 10))
+        token = (pynutil.add_weight(number_graph, 0.09) |
+                 pynutil.add_weight(symbol_graph, 0.09) |
+                 pynutil.add_weight(word_graph, 1))
 
         self.fst = token.optimize()
 
@@ -113,7 +117,7 @@ class StringFst:
     def __init__(self, basic: BasicFst):
         basic_graph = basic.fst
 
-        token_graph = (pynini.project(basic_graph, "input") - 'unquote') @ basic_graph
+        token_graph = dont_accep(basic_graph, 'unquote')
 
         graph = token_graph + pynini.closure(delete_extra_space + token_graph)
         graph = (pynini.cross("quote", "'") +
@@ -121,7 +125,76 @@ class StringFst:
                  pynini.cross("unquote", "'"))
 
         self.fst = graph.optimize()
+        self.token = token(tokenize.STRING, self.fst)
 
+
+class NewlineFst:
+    def __init__(self) -> None:
+        newline_token = token(tokenize.NEWLINE, pynini.escape('\\n'))
+        self.fsts = {
+            'NEWLINE': pynini.cross('next',  newline_token),
+            'INDENT':  pynini.cross('then',  newline_token + token(tokenize.INDENT, pynini.escape('\\t'))),
+            'DEDENT':  pynini.cross('after', newline_token + token(tokenize.DEDENT, ''))
+        }
+        self.fst = pynini.union(*self.fsts.values())
+
+
+PAREN_PAR_PUSH = 1000
+PAREN_PAR_POP  = 1001
+PAREN_BRACKET_PUSH = 1010
+PAREN_BRACKET_POP  = 1011
+PAREN_BRACE_PUSH = 1020
+PAREN_BRACE_POP  = 1021
+
+
+class StackStuff:
+    def __init__(self, symbol: SymbolFst) -> None:
+        self.parens = pynini.PdtParentheses()
+        self.parens.add_pair(PAREN_PAR_PUSH, PAREN_PAR_POP)
+        self.parens.add_pair(PAREN_BRACKET_PUSH, PAREN_BRACKET_POP)
+        self.parens.add_pair(PAREN_BRACE_PUSH, PAREN_BRACE_POP)
+
+        self.fsts = {
+            '(*': pynini.concat(symbol.fsts['('], pynutil.insert(f'[{PAREN_PAR_PUSH}]')),
+            '{*': pynini.concat(symbol.fsts['{'], pynutil.insert(f'[{PAREN_BRACE_PUSH}]')),
+            '[*': pynini.concat(symbol.fsts['['], pynutil.insert(f'[{PAREN_BRACKET_PUSH}]'))
+        }
+
+        self.closer = pynini.union(
+            f')[{PAREN_PAR_POP}]',
+            f'}}[{PAREN_BRACE_POP}]',
+            f'\\][{PAREN_BRACKET_POP}]')
+
+
+class ExpressionFst:
+    def __init__(self, number, string, name, stack_stuff) -> None:
+        operators = pynini.union(
+            pynini.cross('plus', '+'),
+            pynini.cross('minus', '-'),
+            pynini.cross('times', '*'),
+            pynini.cross('divided by', '/'),
+            pynini.cross('and', ','),
+        )
+        operators = token(tokenize.OP, operators)
+
+        misc_atoms = token(tokenize.NAME, pynini.string_map([('true', 'True'),
+        ('false','False'), ('none', 'None')]))
+        atom = pynini.union(
+            pynutil.add_weight(number.token, 0.9),
+            pynutil.add_weight(string.token, 0.9),
+            pynutil.add_weight(name.token, 10),
+            pynutil.add_weight(misc_atoms, 0.9))
+
+        opener = pynini.union(
+            pynini.cross('list of', token(tokenize.OP, pynini.project(stack_stuff.fsts['[*'], 'output'))),
+            name.token + delete_space + pynini.cross('of', token(tokenize.OP, pynini.project(stack_stuff.fsts['(*'], 'output'))),
+        )
+
+        closer = token(tokenize.OP, pynini.cross('close', stack_stuff.closer))
+
+        new_atom = pynini.closure(opener + delete_space) + atom + pynini.closure(delete_space + closer)
+
+        self.fst = new_atom + pynini.closure(delete_space + pynutil.add_weight(operators, -100) + delete_space + new_atom)
 
 class ImportStmtFst:
     def __init__(self, name: NameFst) -> None:
@@ -161,3 +234,6 @@ def remove_and(cardinal: CardinalFst):
              @ graph)
 
     cardinal.graph_no_exception = graph
+
+def dont_accep(fst, bad):
+    return (pynini.project(fst, "input") - bad) @ fst
