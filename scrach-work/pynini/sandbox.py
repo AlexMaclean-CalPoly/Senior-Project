@@ -13,7 +13,7 @@ def main():
             exp_str = input('exp: ')
             if exp_str == 'q':
                 quit(0)
-            o = pin.inverse_normalize(exp_str, verbose=True)
+            o = pin.inverse_normalize(exp_str.strip(), verbose=True)
             print(o)
 
         except Exception:
@@ -31,7 +31,7 @@ def token_test(path):
 
 
 if __name__ == '__main__':
-    #token_test('test.py')
+    token_test('test.py')
     main()
 
 # #

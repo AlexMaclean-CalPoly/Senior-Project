@@ -1,5 +1,4 @@
 import csv
-from threading import stack_size
 import tokenize
 
 import pynini
@@ -32,13 +31,14 @@ class PyClassifyFst:
 
         stack_stuff = StackStuff(symbol=symbol)
         self.parens = stack_stuff.parens
+        newline = NewlineFst()
 
-        import_stmt = ImportStmtFst(name=name)
+        import_stmt = ImportStmtFst(name=name, newline=newline)
 
-        exp_graph = ExpressionFst(number=number, string=string, name=name, stack_stuff=stack_stuff)
-        stmt_fst = import_stmt.fst
+        exp_graph = ExpressionFst(number=number, string=string, name=name, stack_stuff=stack_stuff, newline=newline)
+        stmt_fst = import_stmt.fst | exp_graph.fst
 
-        self.fst = exp_graph.fst
+        self.fst = pynutil.join(stmt_fst, delete_space)
 
 
 class SymbolFst:
@@ -90,13 +90,13 @@ class NameFst:
 
         word = pynini.closure(NOT_SPACE, lower=1)
         word = dont_accep(word, 'bar')
-        word = pynutil.add_weight(word, 10)
+        word = pynutil.add_weight(word, 20)
 
         g = (bars +
         pynini.union(word + pynini.closure(mid_bar + word), single_bar) +
         pynini.closure(delete_space + single_bar))
 
-        self.fst = g
+        self.fst = pynutil.add_weight(g, 10)
         self.token = token(tokenize.NAME, self.fst)
 
 
@@ -134,9 +134,10 @@ class NewlineFst:
         self.fsts = {
             'NEWLINE': pynini.cross('next',  newline_token),
             'INDENT':  pynini.cross('then',  newline_token + token(tokenize.INDENT, pynini.escape('\\t'))),
-            'DEDENT':  pynini.cross('after', newline_token + token(tokenize.DEDENT, ''))
+            'DEDENT':  pynini.cross('after', newline_token + token(tokenize.DEDENT, '')),
         }
-        self.fst = pynini.union(*self.fsts.values())
+        self.fst =pynini.union(delete_space + pynini.union(*self.fsts.values()),
+         pynutil.add_weight(pynutil.insert(newline_token), 100))
 
 
 PAREN_PAR_PUSH = 1000
@@ -167,7 +168,7 @@ class StackStuff:
 
 
 class ExpressionFst:
-    def __init__(self, number, string, name, stack_stuff) -> None:
+    def __init__(self, number, string, name, stack_stuff, newline) -> None:
         operators = pynini.union(
             pynini.cross('plus', '+'),
             pynini.cross('minus', '-'),
@@ -182,22 +183,21 @@ class ExpressionFst:
         atom = pynini.union(
             pynutil.add_weight(number.token, 0.9),
             pynutil.add_weight(string.token, 0.9),
-            pynutil.add_weight(name.token, 10),
+            name.token,
             pynutil.add_weight(misc_atoms, 0.9))
 
         opener = pynini.union(
             pynini.cross('list of', token(tokenize.OP, pynini.project(stack_stuff.fsts['[*'], 'output'))),
             name.token + delete_space + pynini.cross('of', token(tokenize.OP, pynini.project(stack_stuff.fsts['(*'], 'output'))),
         )
-
         closer = token(tokenize.OP, pynini.cross('close', stack_stuff.closer))
-
         new_atom = pynini.closure(opener + delete_space) + atom + pynini.closure(delete_space + closer)
 
-        self.fst = new_atom + pynini.closure(delete_space + pynutil.add_weight(operators, -100) + delete_space + new_atom)
+        line_end = pynini.closure(pynutil.insert(pynini.project(closer, 'output'))) + newline.fst
+        self.fst = new_atom + pynini.closure(delete_space + pynutil.add_weight(operators, -100) + delete_space + new_atom) + line_end
 
 class ImportStmtFst:
-    def __init__(self, name: NameFst) -> None:
+    def __init__(self, name: NameFst, newline) -> None:
         t = {'.': token(tokenize.NAME, pynini.cross('dot', '.')),
         'as': token(tokenize.NAME, 'as'),
         ',':  token(tokenize.NAME, pynini.cross('and', ',')),
@@ -220,7 +220,7 @@ class ImportStmtFst:
         import_from_targets = (t['('] + import_from_as_names + t[')'] | t['*'])
         import_from = (t['from'] + t[' '] + dotted_name + t[' '] + t['import'] + t[' '] + import_from_targets)
 
-        import_stmt = import_name | import_from
+        import_stmt = (import_name | import_from) + newline.fst
         self.fst = import_stmt
 
 
