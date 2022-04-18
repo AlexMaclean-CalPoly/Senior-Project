@@ -19,7 +19,6 @@ def main():
     data_loader = DataLoader(data_layer, batch_size=1, collate_fn=data_layer.collate_fn)
     beam_search = beam.BeamSearch(lambda x: 1, list(cfg.decoder.vocabulary))
 
-
     asr = online.FrameASR(
         model_definition={
             'sample_rate': SAMPLE_RATE,
@@ -50,8 +49,8 @@ def main():
         signal = np.frombuffer(in_data, dtype=np.int16)
         # print(in_data)
         logits = asr.transcribe(signal)
-        text2 = beam_search.process(softmax(logits))
-        print(text2)
+        text = beam_search.process(softmax(logits))
+        print(text)
         return in_data, pa.paContinue
 
 

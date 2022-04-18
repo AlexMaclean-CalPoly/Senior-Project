@@ -9,9 +9,17 @@ Test
 </body>
 
 <script>
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(
+    navigator.mediaDevices.getUserMedia({ audio: { channelCount: {exact: 1}, sampleRate: {ideal: 16000} } }).then(
   (stream) => {
     const recorder = new MediaRecorder(stream)
+    recorder.start(1000)
+    recorder.ondataavailable = (e) => {
+      console.log(e.data)
+      // const audioChunks = new Blob(e.data)
+      // const audioUrl = URL.createObjectURL(audioChunks)
+      // const audio = new Audio(audioUrl)
+      // audio.play()
+    }
 
     // recorder.onstart = async () => {
     //   await fetch("/stream/upload", {

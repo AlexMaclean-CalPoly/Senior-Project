@@ -1,0 +1,86 @@
+import csv
+import tokenize
+
+import pynini
+# from nemo_text_processing.text_normalization.en.taggers.cardinal import CardinalFst
+from nemo_text_processing.inverse_text_normalization.en.taggers.cardinal import CardinalFst
+from nemo_text_processing.inverse_text_normalization.en.taggers.decimal import DecimalFst
+# from pynini.lib import pynutil
+from nemo_text_processing.text_normalization.normalize import Normalizer
+from pynini.lib import pynutil
+#
+from pynini.lib import utf8
+from nemo_text_processing.text_normalization.token_parser import TokenParser
+
+
+
+# def main():
+#     keyword_fst = KeywordFst()
+#
+#
+#     number_fst = get_number_fst()
+#
+#
+#
+#     atom = number_fst
+#     graph = space_star(atom).optimize()
+#
+#     # fun_def.draw('fd.dot', width=6, height=3)
+#
+#
+#    # p = TokenParser()
+
+
+
+
+#  basic_atoms = token('name', true_fst | false_fst | none_fst)
+#
+#  delete_space = pynutil.delete(WHITE_SPACE)
+#  string_fst = token('string',
+#                     pynini.cross('quote', "'") + delete_space +
+#                     pynini.closure(CHAR) +
+#                     delete_space + pynini.cross('unquote', "'"))
+#
+#  underscore = pynini.cross(pynini.union('bar', 'underbar'), '_')
+#  id_part = (
+#          pynutil.add_weight(underscore, 0.9) |
+#          pynutil.add_weight(pynini.closure(NOT_SPACE), 1.1))
+#  id_fst = id_part + pynini.closure(delete_space + underscore + pynini.closure(delete_space + id_part, upper=1))
+#  id_complete = token('name', id_fst)
+#
+#  # New Line Stuff
+#  newlines = (
+#          pynini.cross('next', token('newline', pynini.escape('\\n'))) |
+#          pynini.cross('then', token('newline', pynini.escape('\\n')) + token('indent', pynini.escape('\\t')))
+#  )
+#
+#  # n = InverseNormalizer(lang='en')
+#  op_fst = pynini.union(*[
+#      token('op', pynini.cross(speech_value, py_value))
+#      for py_value, speech_value in other_tokens
+#  ])
+#
+#  fun_def = (
+#          pynini.cross(
+#              pynini.union('define', 'def') +
+#              (pynini.closure(pynini.closure(pynini.union(' a', ' the'), upper=1) + ' function', upper=1)),
+#              token('name', 'def')
+#          )
+#          + delete_space + id_complete + delete_space +
+#          pynini.cross(pynini.union('of', 'taking', 'which takes'), token('op', '('))
+#          + delete_space + space_star(op_fst | basic_atoms | number_fst | string_fst | id_complete)
+#          + delete_space + pynini.cross('then', token('op', ')') + token('op', ':') +
+#                                        token('newline', pynini.escape('\\n')) + token('indent', pynini.escape('\\t')))
+#  )
+#
+#  atom = fun_def | op_fst | newlines | basic_atoms | number_fst | string_fst | id_complete
+#  graph = space_star(atom).optimize()
+#
+# # fun_def.draw('fd.dot', width=6, height=3)
+#
+#
+#  p = TokenParser()
+#
+
+
+

@@ -1,0 +1,34 @@
+:	colon
+=	equals
+=	equal
++	plus
+*	star
+*	times
+-	minus
+-	dash
+/	slash
+/	divide
+!	bang
+,	comma
+.	dot
+\	back slash
+;	semi colon
+|	v bar
+&	ampersand
+<	less
+<	less than
+>	greater
+>	greater than
+%	percent
+~	tilde
+^	circumflex
+^	carat
+@	at
+#	hashtag
+#	pound
+(	open paren
+)	close paren
+[	open bracket
+]	close bracket
+{	open brace
+}	close brace
