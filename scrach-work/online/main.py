@@ -47,7 +47,8 @@ def main():
 
     def callback(in_data, frame_count, time_info, status):
         signal = np.frombuffer(in_data, dtype=np.int16)
-        # print(in_data)
+        print(len(signal))
+        print(len(signal) / 16000.0)
         logits = asr.transcribe(signal)
         text = beam_search.process(softmax(logits))
         print(text)
