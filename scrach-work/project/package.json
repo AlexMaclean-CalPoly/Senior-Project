@@ -1,0 +1,14 @@
+{
+  "name": "racket-voice",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "scripts": {
+    "main": "node index.js"
+  },
+  "author": "Alex MacLean",
+  "dependencies": {
+    "express": "^4.18.1",
+    "socket.io": "^4.5.0"
+  }
+}
