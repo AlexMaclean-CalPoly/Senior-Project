@@ -1,11 +1,9 @@
 console.log("loaded main.js");
 
-
 constraints = {
   audio: true,
   video: false,
 };
-
 
 class StreamWorkletNode extends AudioWorkletNode {
   constructor(context, sampleRate) {
@@ -17,7 +15,17 @@ class StreamWorkletNode extends AudioWorkletNode {
   }
 }
 
+const recordButton = document.getElementById("record");
+const outputText = document.getElementById("output");
+
 const socket = io.connect();
+var enc = new TextDecoder("utf-8");
+
+socket.on("transcript", (data) => {
+  text = enc.decode(data);
+  outputText.textContent = text;
+  console.log(text);
+});
 
 navigator.mediaDevices
   .getUserMedia(constraints)
@@ -34,16 +42,14 @@ navigator.mediaDevices
       var streamWorkletNode = new StreamWorkletNode(audioContext, sampleRate);
 
       streamWorkletNode.port.onmessage = (event) => {
-        // Send transformed PCM buffer to the server
-        console.log(event.data);
+        console.log(event.data[0]);
         socket.emit("audio_in", event.data);
       };
 
-      // connect stream to our worklet
-      microphone.connect(streamWorkletNode);
-      // connect our worklet to the previous destination
-      streamWorkletNode.connect(audioContext.destination);
+      recordButton.onclick = () => {
+        microphone.connect(streamWorkletNode);
+        streamWorkletNode.connect(audioContext.destination);
+      };
     });
-
   })
   .catch(console.log);

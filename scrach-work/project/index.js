@@ -4,6 +4,7 @@ const express = require("express");
 const http = require("http");
 const path = require("path");
 const { Server } = require("socket.io");
+const { spawn } = require("node:child_process");
 
 const app = express();
 const server = http.createServer(app);
@@ -18,8 +19,15 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   console.log("a user connected");
 
+  const ls = spawn("python", [path.join(__dirname, "python", "main.py")]);
+
+  ls.stdout.on("data", (data) => {
+    console.log(`stdout: ${data}`);
+    socket.emit("transcript", data);
+  });
+
   socket.on("audio_in", (data) => {
-    console.log(data);
+    ls.stdin.write(data);
   });
 
   socket.on("disconnect", () => {
