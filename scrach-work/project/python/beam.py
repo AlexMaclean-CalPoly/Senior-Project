@@ -15,7 +15,7 @@ Based off of: https://github.com/corticph/prefix-beam-search/blob/master/prefix_
 """
 
 import re
-from collections import defaultdict, Counter
+from collections import Counter
 
 import numpy as np
 
@@ -30,53 +30,50 @@ class BeamSearch:
         self.beta = beta
         self.prune = prune
 
-        self.Pb, self.Pnb = defaultdict(Counter), defaultdict(Counter)
-        self.Pb[0][''] = 1
-        self.Pnb[0][''] = 0
+        self.Pb_prev, self.Pnb_prev = Counter(), Counter()
+        self.Pb_prev[''] = 1
+        self.Pnb_prev[''] = 0
         self.A_prev = ['']
-        self.A_next = None
 
     def process(self, ctc):
-        offset = len(self.Pb)
-        timestep_count = ctc.shape[0]
-
-        for ctc_t, t in zip(ctc, range(offset, timestep_count + offset)):
+        for ctc_t in ctc:
+            Pb_t, Pnb_t = Counter(), Counter()
             # print(f"{t}")
-            pruned_alphabet = [self.alphabet[i] for i in np.where(ctc_t > self.prune)[0]]
+            pruned_alphabet = [(i, self.alphabet[i]) for i in np.where(ctc_t > self.prune)[0]]
             for prefix in self.A_prev:
-                for chr in pruned_alphabet:
-                    c_ix = self.alphabet.index(chr)
+                for c_ix, chr in pruned_alphabet:
 
                     if chr == '_':
-                        self.Pb[t][prefix] += ctc_t[-1] * (self.Pb[t - 1][prefix] + self.Pnb[t - 1][prefix])
+                        Pb_t[prefix] += ctc_t[-1] * (self.Pb_prev[prefix] + self.Pnb_prev[prefix])
 
                     else:
                         prefix_new = prefix + chr
                         if len(prefix) > 0 and chr == prefix[-1]:
-                            self.Pnb[t][prefix_new] += ctc_t[c_ix] * self.Pb[t - 1][prefix]
-                            self.Pnb[t][prefix] += ctc_t[c_ix] * self.Pnb[t - 1][prefix]
+                            Pnb_t[prefix_new] += ctc_t[c_ix] * self.Pb_prev[prefix]
+                            Pnb_t[prefix] += ctc_t[c_ix] * self.Pnb_prev[prefix]
 
                         elif len(prefix.replace(' ', '')) > 0 and chr == ' ':
                             lm_prob = self.lm_score(prefix_new) ** self.alpha
-                            self.Pnb[t][prefix_new] += lm_prob * ctc_t[c_ix] * (self.Pb[t - 1][prefix] + self.Pnb[t - 1][prefix])
+                            Pnb_t[prefix_new] += lm_prob * ctc_t[c_ix] * (self.Pb_prev[prefix] + self.Pnb_prev[prefix])
                         else:
-                            self.Pnb[t][prefix_new] += ctc_t[c_ix] * (self.Pb[t - 1][prefix] + self.Pnb[t - 1][prefix])
+                            Pnb_t[prefix_new] += ctc_t[c_ix] * (self.Pb_prev[prefix] + self.Pnb_prev[prefix])
 
                         if prefix_new not in self.A_prev:
-                            self.Pb[t][prefix_new] += ctc_t[-1] * (self.Pb[t - 1][prefix_new] + self.Pnb[t - 1][prefix_new])
-                            self.Pnb[t][prefix_new] += ctc_t[c_ix] * self.Pnb[t - 1][prefix_new]
+                            Pb_t[prefix_new] += ctc_t[-1] * (self.Pb_prev[prefix_new] + self.Pnb_prev[prefix_new])
+                            Pnb_t[prefix_new] += ctc_t[c_ix] * self.Pnb_prev[prefix_new]
 
-            self.A_next = self.Pb[t] + self.Pnb[t]
-            # print(self.A_prev)
-            self.A_prev = sorted(self.A_next, key=self.sorter, reverse=True)[:self.beam_width]
+            A_next = Pb_t + Pnb_t
+            self.A_prev = [item[0] for item in sorted(A_next.items(), key=self.sorter, reverse=True)[:self.beam_width]]
+            self.Pb_prev, self.Pnb_prev = Pb_t, Pnb_t
 
         return self.A_prev[0]
 
     def lm_score(self, tokens):
         return self.lm(tokens)
 
-    def sorter(self, l):
-        return self.A_next[l] * (len(self._get_words(l)) + 1) ** self.beta
+    def sorter(self, item):
+        l, score = item
+        return score * (len(self._get_words(l)) + 1) ** self.beta
 
     @staticmethod
     def _get_words(l):

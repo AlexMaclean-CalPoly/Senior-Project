@@ -86,14 +86,14 @@ class FrameASR:
         self.data_layer = data_layer
 
         sample_rate = model_definition['sample_rate']
-        self.n_frame_overlap = int(frame_overlap * sample_rate)
+        n_frame_overlap = int(frame_overlap * sample_rate)
+        self.buffer_size = 2 * n_frame_overlap
 
         timestep_duration = model_definition['AudioToMelSpectrogramPreprocessor']['window_stride']
         for block in model_definition['JasperEncoder']['jasper']:
             timestep_duration *= block['stride'][0] ** block['repeat']
-        self.n_timesteps_overlap = int(frame_overlap / timestep_duration) - 2
+        self.n_timesteps_overlap = int(frame_overlap / timestep_duration)
 
-        self.buffer_size = 2 * self.n_frame_overlap
         self.reset()
 
     @torch.no_grad()
