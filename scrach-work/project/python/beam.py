@@ -22,7 +22,7 @@ import numpy as np
 
 class BeamSearch:
     def __init__(self, lm, alphabet, beam_width=25, alpha=0.30, beta=5, prune=0.001):
-        self.alphabet = alphabet + ['%']
+        self.alphabet = alphabet + ['_']
         self.lm = lm
 
         self.beam_width = beam_width
@@ -37,47 +37,40 @@ class BeamSearch:
         self.A_next = None
 
     def process(self, ctc):
-        # just add an imaginative zero'th step (will make indexing more intuitive)
-        #ctc = np.vstack((np.zeros(ctc.shape[1]), ctc))
         offset = len(self.Pb)
         timestep_count = ctc.shape[0]
 
         for ctc_t, t in zip(ctc, range(offset, timestep_count + offset)):
             # print(f"{t}")
             pruned_alphabet = [self.alphabet[i] for i in np.where(ctc_t > self.prune)[0]]
-            for l in self.A_prev:
-                if len(l) > 0 and l[-1] == '>':
-                    self.Pb[t][l] = self.Pb[t - 1][l]
-                    self.Pnb[t][l] = self.Pnb[t - 1][l]
-                    continue
+            for prefix in self.A_prev:
+                for chr in pruned_alphabet:
+                    c_ix = self.alphabet.index(chr)
 
-                for c in pruned_alphabet:
-                    c_ix = self.alphabet.index(c)
-
-                    if c == '%':
-                        self.Pb[t][l] += ctc_t[-1] * (self.Pb[t - 1][l] + self.Pnb[t - 1][l])
+                    if chr == '_':
+                        self.Pb[t][prefix] += ctc_t[-1] * (self.Pb[t - 1][prefix] + self.Pnb[t - 1][prefix])
 
                     else:
-                        l_plus = l + c
-                        if len(l) > 0 and c == l[-1]:
-                            self.Pnb[t][l_plus] += ctc_t[c_ix] * self.Pb[t - 1][l]
-                            self.Pnb[t][l] += ctc_t[c_ix] * self.Pnb[t - 1][l]
+                        prefix_new = prefix + chr
+                        if len(prefix) > 0 and chr == prefix[-1]:
+                            self.Pnb[t][prefix_new] += ctc_t[c_ix] * self.Pb[t - 1][prefix]
+                            self.Pnb[t][prefix] += ctc_t[c_ix] * self.Pnb[t - 1][prefix]
 
-                        elif len(l.replace(' ', '')) > 0 and c in (' ', '>'):
-                            lm_prob = self.lm_score(l_plus.strip(' >')) ** self.alpha
-                            self.Pnb[t][l_plus] += lm_prob * ctc_t[c_ix] * (self.Pb[t - 1][l] + self.Pnb[t - 1][l])
+                        elif len(prefix.replace(' ', '')) > 0 and chr == ' ':
+                            lm_prob = self.lm_score(prefix_new) ** self.alpha
+                            self.Pnb[t][prefix_new] += lm_prob * ctc_t[c_ix] * (self.Pb[t - 1][prefix] + self.Pnb[t - 1][prefix])
                         else:
-                            self.Pnb[t][l_plus] += ctc_t[c_ix] * (self.Pb[t - 1][l] + self.Pnb[t - 1][l])
+                            self.Pnb[t][prefix_new] += ctc_t[c_ix] * (self.Pb[t - 1][prefix] + self.Pnb[t - 1][prefix])
 
-                        if l_plus not in self.A_prev:
-                            self.Pb[t][l_plus] += ctc_t[-1] * (self.Pb[t - 1][l_plus] + self.Pnb[t - 1][l_plus])
-                            self.Pnb[t][l_plus] += ctc_t[c_ix] * self.Pnb[t - 1][l_plus]
+                        if prefix_new not in self.A_prev:
+                            self.Pb[t][prefix_new] += ctc_t[-1] * (self.Pb[t - 1][prefix_new] + self.Pnb[t - 1][prefix_new])
+                            self.Pnb[t][prefix_new] += ctc_t[c_ix] * self.Pnb[t - 1][prefix_new]
 
             self.A_next = self.Pb[t] + self.Pnb[t]
             # print(self.A_prev)
             self.A_prev = sorted(self.A_next, key=self.sorter, reverse=True)[:self.beam_width]
 
-        return self.A_prev[0].strip('>')
+        return self.A_prev[0]
 
     def lm_score(self, tokens):
         return self.lm(tokens)

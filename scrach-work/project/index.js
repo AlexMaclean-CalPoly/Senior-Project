@@ -26,6 +26,10 @@ io.on("connection", (socket) => {
     socket.emit("transcript", data);
   });
 
+  ls.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
   socket.on("audio_in", (data) => {
     ls.stdin.write(data);
   });

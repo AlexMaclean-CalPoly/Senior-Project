@@ -74,7 +74,7 @@ class AudioDataLayer(IterableDataset):
 class FrameASR:
 
     def __init__(self, model_definition, asr_model, data_loader, data_layer,
-                 frame_len=2.0, frame_overlap=2.5, offset=10):
+                 frame_overlap=2.5):
         """
         Args:
           frame_len: frame's duration, seconds
@@ -84,36 +84,29 @@ class FrameASR:
         self.asr_model = asr_model
         self.data_loader = data_loader
         self.data_layer = data_layer
-        self.offset = offset
 
         sample_rate = model_definition['sample_rate']
-        self.n_frame_len = int(frame_len * sample_rate)
         self.n_frame_overlap = int(frame_overlap * sample_rate)
 
         timestep_duration = model_definition['AudioToMelSpectrogramPreprocessor']['window_stride']
         for block in model_definition['JasperEncoder']['jasper']:
             timestep_duration *= block['stride'][0] ** block['repeat']
         self.n_timesteps_overlap = int(frame_overlap / timestep_duration) - 2
-        self.buffer = np.zeros(shape=2 * self.n_frame_overlap + self.n_frame_len,
-                               dtype=np.float32)
+
+        self.buffer_size = 2 * self.n_frame_overlap
         self.reset()
 
     @torch.no_grad()
-    def transcribe(self, frame=None):
-        if frame is None:
-            frame = np.zeros(shape=self.n_frame_len, dtype=np.float32)
-        if len(frame) < self.n_frame_len:
-            frame = np.pad(frame, [0, self.n_frame_len - len(frame)], 'constant')
+    def transcribe(self, frame):
         unmerged = self._decode(frame)
         return unmerged
 
     def _decode(self, frame):
-        assert len(frame) == self.n_frame_len
-        self.buffer[:-self.n_frame_len] = self.buffer[self.n_frame_len:]
-        self.buffer[-self.n_frame_len:] = frame
-        logits = self._infer_signal(self.buffer).cpu().numpy()[0]
+        window = np.concatenate((self.buffer, frame))
+        logits = self._infer_signal(window).cpu().numpy()[0]
+        self.buffer = window[-self.buffer_size:]
         decoded = logits[self.n_timesteps_overlap:-self.n_timesteps_overlap]
-        return decoded[:len(decoded) - self.offset]
+        return decoded
 
     # inference method for audio signal (single instance)
     def _infer_signal(self, signal):
@@ -128,5 +121,5 @@ class FrameASR:
 
     # Reset frame_history and decoder's state
     def reset(self):
-        self.buffer = np.zeros(shape=self.buffer.shape, dtype=np.float32)
+        self.buffer = np.zeros(shape=self.buffer_size, dtype=np.float32)
 

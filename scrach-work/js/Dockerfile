@@ -6,7 +6,6 @@ RUN apt-get update
 RUN apt-get install -y libsndfile1 ffmpeg
 RUN pip install Cython
 RUN pip install nemo_toolkit[all]
-RUN pip install librosa
 
 EXPOSE 5000
 
