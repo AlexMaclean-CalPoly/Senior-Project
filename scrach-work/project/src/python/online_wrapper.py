@@ -17,9 +17,6 @@ SAMPLE_RATE = 16000  # sample rate, Hz
 
 class OnlineCodeTranscriber:
     def __init__(self):
-        sys.stdout.buffer.write(b"[Starting]\r\n")
-        sys.stdout.flush()
-
         cfg, asr_model = get_asr_model()
         data_layer = AudioDataLayer(sample_rate=cfg.preprocessor.sample_rate)
         data_loader = DataLoader(

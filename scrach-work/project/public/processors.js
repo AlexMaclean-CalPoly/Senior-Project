@@ -1,10 +1,8 @@
-
 class StreamProcessor extends AudioWorkletProcessor {
   constructor(options) {
     super();
-    var targetChunkLength = 0.1; // Approximate, in sec. Actual chunk may be smaller
-    this.sampleRate = options.processorOptions.sampleRate;
-    this.outputChunk = new Int16Array(this.sampleRate * targetChunkLength);
+    const { targetChunkLength } = options.processorOptions;
+    this.outputChunk = new Int16Array(sampleRate * targetChunkLength);
     this.offset = 0;
   }
 

@@ -1,16 +1,17 @@
 console.log("loaded main.js");
 
+TARGET_SAMPLE_RATE = 16000;
+TARGET_CHUNK_LENGTH = 0.1;
+
 constraints = {
   audio: true,
   video: false,
 };
 
 class StreamWorkletNode extends AudioWorkletNode {
-  constructor(context, sampleRate) {
+  constructor(context, targetChunkLength) {
     super(context, "stream-processor", {
-      processorOptions: {
-        sampleRate: sampleRate,
-      },
+      processorOptions: { targetChunkLength },
     });
   }
 }
@@ -31,16 +32,17 @@ navigator.mediaDevices
   .getUserMedia(constraints)
   .then((stream) => {
     recordButton.onclick = () => {
-      const audioContext = new AudioContext({ sampleRate: 16000 });
+      const audioContext = new AudioContext({ sampleRate: TARGET_SAMPLE_RATE });
 
       const microphone = audioContext.createMediaStreamSource(stream);
-      console.log(microphone);
-
       const sampleRate = audioContext.sampleRate;
       console.log(sampleRate);
 
       audioContext.audioWorklet.addModule("processors.js").then(() => {
-        var streamWorkletNode = new StreamWorkletNode(audioContext, sampleRate);
+        var streamWorkletNode = new StreamWorkletNode(
+          audioContext,
+          TARGET_CHUNK_LENGTH
+        );
 
         streamWorkletNode.port.onmessage = (event) => {
           socket.emit("audio_in", event.data);
