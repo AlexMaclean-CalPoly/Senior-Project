@@ -13,7 +13,7 @@ from pathlib import Path
 def get_new_config(cfg):
     OmegaConf.set_struct(cfg.preprocessor, False)
 
-    with open(Path(__file__).parent / 'normalization.json', 'r') as in_file:
+    with open(Path(__file__).parent / "normalization.json", "r") as in_file:
         normalization = json.load(in_file)
 
     cfg.preprocessor.normalize = normalization
@@ -26,7 +26,7 @@ def get_new_config(cfg):
 
 
 def get_asr_model():
-    asr_model = nemo_asr.models.EncDecCTCModel.from_pretrained('QuartzNet15x5Base-En')
+    asr_model = nemo_asr.models.EncDecCTCModel.from_pretrained("QuartzNet15x5Base-En")
     cfg = get_new_config(copy.deepcopy(asr_model._cfg))
     asr_model.preprocessor = asr_model.from_config_dict(cfg.preprocessor)
 
@@ -37,12 +37,11 @@ def get_asr_model():
 
 
 class AudioDataLayer(IterableDataset):
-
     @property
     def output_types(self):
         return {
-            'audio_signal': NeuralType(('B', 'T'), AudioSignal(freq=self._sample_rate)),
-            'a_sig_length': NeuralType(tuple('B'), LengthsType()),
+            "audio_signal": NeuralType(("B", "T"), AudioSignal(freq=self._sample_rate)),
+            "a_sig_length": NeuralType(tuple("B"), LengthsType()),
         }
 
     def __init__(self, sample_rate):
@@ -59,11 +58,13 @@ class AudioDataLayer(IterableDataset):
         if not self.output:
             raise StopIteration
         self.output = False
-        return (torch.as_tensor(self.signal, dtype=torch.float32),
-                torch.as_tensor(self.signal_shape, dtype=torch.int64))
+        return (
+            torch.as_tensor(self.signal, dtype=torch.float32),
+            torch.as_tensor(self.signal_shape, dtype=torch.int64),
+        )
 
     def set_signal(self, signal):
-        self.signal = signal.astype(np.float32) / 32768.
+        self.signal = signal.astype(np.float32) / 32768.0
         self.signal_shape = self.signal.size
         self.output = True
 
@@ -72,9 +73,9 @@ class AudioDataLayer(IterableDataset):
 
 
 class FrameASR:
-
-    def __init__(self, model_definition, asr_model, data_loader, data_layer,
-                 frame_overlap=2.5):
+    def __init__(
+        self, model_definition, asr_model, data_loader, data_layer, frame_overlap=2.5
+    ):
         """
         Args:
           frame_len: frame's duration, seconds
@@ -85,28 +86,27 @@ class FrameASR:
         self.data_loader = data_loader
         self.data_layer = data_layer
 
-        sample_rate = model_definition['sample_rate']
+        sample_rate = model_definition["sample_rate"]
         n_frame_overlap = int(frame_overlap * sample_rate)
         self.buffer_size = 2 * n_frame_overlap
 
-        timestep_duration = model_definition['AudioToMelSpectrogramPreprocessor']['window_stride']
-        for block in model_definition['JasperEncoder']['jasper']:
-            timestep_duration *= block['stride'][0] ** block['repeat']
+        timestep_duration = model_definition["AudioToMelSpectrogramPreprocessor"][
+            "window_stride"
+        ]
+        for block in model_definition["JasperEncoder"]["jasper"]:
+            timestep_duration *= block["stride"][0] ** block["repeat"]
         self.n_timesteps_overlap = int(frame_overlap / timestep_duration)
 
         self.reset()
 
     @torch.no_grad()
     def transcribe(self, frame):
-        unmerged = self._decode(frame)
-        return unmerged
-
-    def _decode(self, frame):
         window = np.concatenate((self.buffer, frame))
         logits = self._infer_signal(window).cpu().numpy()[0]
-        self.buffer = window[-self.buffer_size:]
-        decoded = logits[self.n_timesteps_overlap:-self.n_timesteps_overlap]
-        return decoded
+        self.buffer = window[-self.buffer_size :]
+        decoded = logits[self.n_timesteps_overlap : -self.n_timesteps_overlap]
+        draft = logits[-self.n_timesteps_overlap :]
+        return (decoded, draft)
 
     # inference method for audio signal (single instance)
     def _infer_signal(self, signal):
@@ -115,11 +115,10 @@ class FrameASR:
         audio_signal, audio_signal_len = batch
         log_probs, _encoded_len, _predictions = self.asr_model.forward(
             input_signal=audio_signal.to(self.asr_model.device),
-            input_signal_length=audio_signal_len.to(self.asr_model.device)
+            input_signal_length=audio_signal_len.to(self.asr_model.device),
         )
         return log_probs
 
     # Reset frame_history and decoder's state
     def reset(self):
         self.buffer = np.zeros(shape=self.buffer_size, dtype=np.float32)
-

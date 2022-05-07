@@ -2,9 +2,9 @@
   "name": "racket-voice",
   "version": "1.0.0",
   "description": "test",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "main": "node index.js"
+    "main": "node src/index.js"
   },
   "author": "Alex MacLean",
   "dependencies": {

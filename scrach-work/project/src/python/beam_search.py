@@ -29,45 +29,64 @@ class SearchState:
 
 class BeamSearch:
     def __init__(self, lm, alphabet, beam_width=25, alpha=0.30, beta=5, prune=0.001):
-        self.alphabet = alphabet + ['_']
+        self.alphabet = alphabet + ["_"]
         self.lm = lm
         self.beam_width = beam_width
         self.alpha = alpha
         self.beta = beta
         self.prune = prune
 
-    def process(self, ctc: np.ndarray, state: SearchState):
+    def __call__(self, ctc: np.ndarray, state: SearchState):
         for ctc_t in ctc:
             state = self._process(ctc_t, state)
         return state
 
     def _process(self, ctc_t, state: SearchState):
         next_state = SearchState()
-        pruned_alphabet = [(i, self.alphabet[i]) for i in np.where(ctc_t > self.prune)[0]]
+        pruned_alphabet = [
+            (i, self.alphabet[i]) for i in np.where(ctc_t > self.prune)[0]
+        ]
 
         for prefix in state.A:
             for ch_i, chr in pruned_alphabet:
 
-                if chr == '_':
-                    next_state.Pb[prefix] += ctc_t[-1] * (state.Pb[prefix] + state.Pnb[prefix])
+                if chr == "_":
+                    next_state.Pb[prefix] += ctc_t[-1] * (
+                        state.Pb[prefix] + state.Pnb[prefix]
+                    )
 
                 else:
                     prefix_new = prefix + chr
                     if len(prefix) > 0 and chr == prefix[-1]:
                         next_state.Pnb[prefix_new] += ctc_t[ch_i] * state.Pb[prefix]
                         next_state.Pnb[prefix] += ctc_t[ch_i] * state.Pnb[prefix]
-                    elif len(prefix.replace(' ', '')) > 0 and chr == ' ':
+                    elif len(prefix.replace(" ", "")) > 0 and chr == " ":
                         lm_prob = self.lm(prefix_new) ** self.alpha
-                        next_state.Pnb[prefix_new] += lm_prob * ctc_t[ch_i] * (state.Pb[prefix] + state.Pnb[prefix])
+                        next_state.Pnb[prefix_new] += (
+                            lm_prob
+                            * ctc_t[ch_i]
+                            * (state.Pb[prefix] + state.Pnb[prefix])
+                        )
                     else:
-                        next_state.Pnb[prefix_new] += ctc_t[ch_i] * (state.Pb[prefix] + state.Pnb[prefix])
+                        next_state.Pnb[prefix_new] += ctc_t[ch_i] * (
+                            state.Pb[prefix] + state.Pnb[prefix]
+                        )
 
                     if prefix_new not in state.A:
-                        next_state.Pb[prefix_new] += ctc_t[-1] * (state.Pb[prefix_new] + state.Pnb[prefix_new])
-                        next_state.Pnb[prefix_new] += ctc_t[ch_i] * state.Pnb[prefix_new]
+                        next_state.Pb[prefix_new] += ctc_t[-1] * (
+                            state.Pb[prefix_new] + state.Pnb[prefix_new]
+                        )
+                        next_state.Pnb[prefix_new] += (
+                            ctc_t[ch_i] * state.Pnb[prefix_new]
+                        )
 
         A_next = next_state.Pb + next_state.Pnb
-        next_state.A = [item[0] for item in sorted(A_next.items(), key=self._sorter, reverse=True)[:self.beam_width]]
+        next_state.A = [
+            item[0]
+            for item in sorted(A_next.items(), key=self._sorter, reverse=True)[
+                : self.beam_width
+            ]
+        ]
         return next_state
 
     def _sorter(self, item):
@@ -76,9 +95,8 @@ class BeamSearch:
 
     @staticmethod
     def _get_words(l):
-        return re.findall(r'\w+[\s|>]', l)
+        return re.findall(r"\w+[\s|>]", l)
 
     @staticmethod
     def start_state():
-        return SearchState(Pb={'': 1}, Pnb={'': 0}, A=[''])
-
+        return SearchState(Pb={"": 1}, Pnb={"": 0}, A=[""])

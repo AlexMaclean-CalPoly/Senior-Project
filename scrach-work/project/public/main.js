@@ -30,26 +30,25 @@ socket.on("transcript", (data) => {
 navigator.mediaDevices
   .getUserMedia(constraints)
   .then((stream) => {
-    const audioContext = new AudioContext({ sampleRate: 16000 });
+    recordButton.onclick = () => {
+      const audioContext = new AudioContext({ sampleRate: 16000 });
 
-    const microphone = audioContext.createMediaStreamSource(stream);
-    console.log(microphone);
+      const microphone = audioContext.createMediaStreamSource(stream);
+      console.log(microphone);
 
-    const sampleRate = audioContext.sampleRate;
-    console.log(sampleRate);
+      const sampleRate = audioContext.sampleRate;
+      console.log(sampleRate);
 
-    audioContext.audioWorklet.addModule("processors.js").then(() => {
-      var streamWorkletNode = new StreamWorkletNode(audioContext, sampleRate);
+      audioContext.audioWorklet.addModule("processors.js").then(() => {
+        var streamWorkletNode = new StreamWorkletNode(audioContext, sampleRate);
 
-      streamWorkletNode.port.onmessage = (event) => {
-        console.log(event.data[0]);
-        socket.emit("audio_in", event.data);
-      };
+        streamWorkletNode.port.onmessage = (event) => {
+          socket.emit("audio_in", event.data);
+        };
 
-      recordButton.onclick = () => {
         microphone.connect(streamWorkletNode);
         streamWorkletNode.connect(audioContext.destination);
-      };
-    });
+      });
+    };
   })
-  .catch(console.log);
+  .catch(console.error);
