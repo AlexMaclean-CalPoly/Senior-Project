@@ -1,5 +1,4 @@
 FROM python:3.7-buster
-#FROM node
 
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get install -y nodejs
@@ -15,8 +14,8 @@ RUN npm install
 
 COPY . .
 
+RUN cd src/python/ && python racket_tagger/tagger.py && rm -rf racket_tagger
+
 EXPOSE 3000
 
-#ENTRYPOINT ["node", "--version"]
-#ENTRYPOINT ["python3", "--version"]
 ENTRYPOINT ["npm", "run", "main"]

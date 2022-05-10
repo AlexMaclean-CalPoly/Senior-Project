@@ -1,4 +1,6 @@
 import csv
+from pathlib import Path
+
 
 import pynini
 from nemo_text_processing.inverse_text_normalization.en.taggers.cardinal import CardinalFst
@@ -50,7 +52,7 @@ def racket_fst():
 
 
 def symbol_fst():
-    with open('data/symbols.tsv', 'r') as keywords_file:
+    with open(Path(__file__).parent / 'data' / 'symbols.tsv', 'r') as keywords_file:
         reader = csv.reader(keywords_file, delimiter="\t")
         keyword_mappings = [(name.split(' '), row[0]) for row in reader
                             for name in row[1:]]
@@ -130,3 +132,9 @@ def remove_and(cardinal: CardinalFst):
 
     cardinal.graph_no_exception = graph
     return cardinal
+
+if __name__ == '__main__':
+    print('Racket FST:')
+    graph = racket_fst()
+    graph.write('racket.fst')
+    print('done')

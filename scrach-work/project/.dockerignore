@@ -1,0 +1,6 @@
+log.txt
+docker-commands
+.gitignore
+racket.fst
+__pycache__
+node_modules

@@ -1,5 +1,6 @@
 from normalize import InverseNormalizer
 from racket_fst import racket_fst
+from pynini import Fst
 
 
 class RacketVerablize:
@@ -30,7 +31,8 @@ class RacketVerablize:
 
 
 def main():
-    pin = InverseNormalizer(racket_fst(), RacketVerablize())
+    racket_fst = Fst.read('racket.fst')
+    pin = InverseNormalizer(racket_fst, RacketVerablize())
     while True:
         try:
             exp_str = input('exp: ')
