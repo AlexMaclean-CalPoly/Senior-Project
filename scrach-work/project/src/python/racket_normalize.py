@@ -1,7 +1,8 @@
 import pynini
 from nemo_text_processing.text_normalization.token_parser import TokenParser
+from pathlib import Path
 
-
+# A
 class InverseNormalizer:
     def __init__(self, tagger: pynini.FstLike, verbalizer):
         self.tagger = tagger
@@ -27,7 +28,7 @@ class InverseNormalizer:
         return tagged_text
 
 
-class RacketVerablize:
+class RacketVerbalize:
     def verbalize(self, raw_tokens):
         tokens = [entry['tokens'] for entry in raw_tokens]
         stack = [[]]
@@ -48,7 +49,11 @@ class RacketVerablize:
     @staticmethod
     def print_sexp(sexp):
         if isinstance(sexp, list):
-            return f'({" ".join(RacketVerablize.print_sexp(entry) for entry in sexp)})'
+            return f'({" ".join(RacketVerbalize.print_sexp(entry) for entry in sexp)})'
         else:
             return sexp
 
+
+def racket_inverse_normalizer():
+    tagger = pynini.Fst.read(Path(__file__).parent / 'racket.fst')
+    return InverseNormalizer(tagger, RacketVerbalize())

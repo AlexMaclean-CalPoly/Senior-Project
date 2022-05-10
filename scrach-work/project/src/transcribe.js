@@ -8,7 +8,9 @@ class TranscriptProcess {
   constructor() {
     this.process = spawn("python", [path.join(__dirname, "python", "main.py")]);
 
-    this.process.stderr.on("data", console.error);
+    this.process.stderr.on("data", (data) => {
+      console.error(`stderr: ${data}`)
+    });
   }
 
   send(data) {

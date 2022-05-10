@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 
 from beam_search import BeamSearch
 from frame_asr import FrameASR, AudioDataLayer, get_asr_model
+from racket_normalize import racket_inverse_normalizer
 
 import sys
 
@@ -39,6 +40,8 @@ class OnlineCodeTranscriber:
         self.beam_search = BeamSearch(lambda x: 1, list(cfg.decoder.vocabulary))
         self.search_state = BeamSearch.start_state()
 
+        self.normalizer = racket_inverse_normalizer()
+
         sys.stdout.buffer.write(b"[Ready]\r\n")
         sys.stdout.flush()
 
@@ -51,7 +54,7 @@ class OnlineCodeTranscriber:
             self.softmax(draft_logits), self.search_state
         )
         text = draft_state.A[0]
-        return text
+        return self.normalizer.inverse_normalize(text)
 
     @staticmethod
     def softmax(logits):
