@@ -7,6 +7,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 class TranscriptProcess {
   constructor() {
     this.process = spawn("python", [path.join(__dirname, "python", "main.py")]);
+
+    this.process.stderr.on("data", console.error);
   }
 
   send(data) {

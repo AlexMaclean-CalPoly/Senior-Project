@@ -45,7 +45,7 @@ class OnlineCodeTranscriber:
     def transcribe(self, signal):
         logits, draft_logits = self.asr.transcribe(signal)
         self.search_state = self.beam_search(
-            self.softmax(logits), self.search_state
+            self.softmax(logits), self.search_state, space=True
         )
         draft_state = self.beam_search(
             self.softmax(draft_logits), self.search_state

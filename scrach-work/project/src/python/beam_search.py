@@ -36,12 +36,17 @@ class BeamSearch:
         self.beta = beta
         self.prune = prune
 
-    def __call__(self, ctc: np.ndarray, state: SearchState):
+    def __call__(self, ctc: np.ndarray, state: SearchState, space=False) -> SearchState:
+        initial = state
         for ctc_t in ctc:
             state = self._process(ctc_t, state)
+        if space and initial.A == state.A:
+            space = np.zeros(len(self.alphabet))
+            space[self.alphabet.index(" ")] = 1
+            state = self._process(space, state)
         return state
 
-    def _process(self, ctc_t, state: SearchState):
+    def _process(self, ctc_t, state: SearchState) -> SearchState:
         next_state = SearchState()
         pruned_alphabet = [
             (i, self.alphabet[i]) for i in np.where(ctc_t > self.prune)[0]

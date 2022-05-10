@@ -20,7 +20,15 @@ const recordButton = document.getElementById("record");
 const outputText = document.getElementById("output");
 
 const socket = io.connect();
-var enc = new TextDecoder("utf-8");
+const enc = new TextDecoder("utf-8");
+
+socket.on("connection", () => {
+  console.log("connected");
+})
+
+socket.on("disconnect", () => {
+  console.log("disconnected");
+})
 
 socket.on("transcript", (data) => {
   text = enc.decode(data);
@@ -38,7 +46,7 @@ navigator.mediaDevices
       const sampleRate = audioContext.sampleRate;
       console.log(sampleRate);
 
-      audioContext.audioWorklet.addModule("processors.js").then(() => {
+      audioContext.audioWorklet.addModule("js/processors.js").then(() => {
         var streamWorkletNode = new StreamWorkletNode(
           audioContext,
           TARGET_CHUNK_LENGTH

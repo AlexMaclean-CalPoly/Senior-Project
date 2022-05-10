@@ -122,3 +122,10 @@ class FrameASR:
     # Reset frame_history and decoder's state
     def reset(self):
         self.buffer = np.zeros(shape=self.buffer_size, dtype=np.float32)
+
+    @staticmethod
+    def _greedy_decoder(logits, vocab):
+        s = ''
+        for i in range(logits.shape[0]):
+            s += vocab[np.argmax(logits[i])]
+        return s

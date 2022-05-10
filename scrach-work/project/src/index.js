@@ -23,7 +23,9 @@ io.on("connection", (socket) => {
 
   transcriptProcess.onTranscript((data) => {
     console.log(`stdout: ${data}`);
-    socket.emit("transcript", data);
+    if (socket.connected) {
+      socket.emit("transcript", data);
+    }
   });
 
   socket.on("audio_in", (data) => {

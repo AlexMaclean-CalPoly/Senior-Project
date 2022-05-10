@@ -1,38 +1,238 @@
-[NeMo W 2022-05-07 13:47:05 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
-[NeMo W 2022-05-07 13:47:08 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+[NeMo W 2022-05-07 14:41:47 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-07 14:41:50 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
       warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
     
-[NeMo W 2022-05-07 13:47:08 experimental:27] Module <function get_argmin_mat at 0x00000230C62CF040> is experimental, not ready for production and is not fully supported. Use at your own risk.
-[NeMo W 2022-05-07 13:47:08 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x00000230C62CF0D0> is experimental, not ready for production and is not fully supported. Use at your own risk.
-[NeMo W 2022-05-07 13:47:08 experimental:27] Module <function parse_scale_configs at 0x00000230C62CFAF0> is experimental, not ready for production and is not fully supported. Use at your own risk.
-[NeMo W 2022-05-07 13:47:08 experimental:27] Module <function get_embs_and_timestamps at 0x00000230C62CFB80> is experimental, not ready for production and is not fully supported. Use at your own risk.
-[NeMo I 2022-05-07 13:47:09 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
-[NeMo I 2022-05-07 13:47:09 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
-[NeMo I 2022-05-07 13:47:09 common:728] Instantiating model from pre-trained checkpoint
-[NeMo I 2022-05-07 13:47:10 features:264] PADDING: 16
-[NeMo I 2022-05-07 13:47:10 features:281] STFT using torch
-[NeMo I 2022-05-07 13:47:13 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
-[NeMo I 2022-05-07 13:47:13 features:264] PADDING: 0
-[NeMo I 2022-05-07 13:47:13 features:281] STFT using torch
-[NeMo W 2022-05-07 13:48:24 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+[NeMo W 2022-05-07 14:41:52 experimental:27] Module <function get_argmin_mat at 0x00000231CA4CE160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:41:52 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x00000231CA4CE1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:41:52 experimental:27] Module <function parse_scale_configs at 0x00000231CA4CEC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:41:52 experimental:27] Module <function get_embs_and_timestamps at 0x00000231CA4CECA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-07 14:41:52 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-07 14:41:52 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-07 14:41:52 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-07 14:41:54 features:264] PADDING: 16
+[NeMo I 2022-05-07 14:41:54 features:281] STFT using torch
+[NeMo I 2022-05-07 14:41:56 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-07 14:41:56 features:264] PADDING: 0
+[NeMo I 2022-05-07 14:41:56 features:281] STFT using torch
+[NeMo W 2022-05-07 14:42:27 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-07 14:42:28 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-07 14:42:29 experimental:27] Module <function get_argmin_mat at 0x00000247BE3CD160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:42:29 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x00000247BE3CD1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:42:29 experimental:27] Module <function parse_scale_configs at 0x00000247BE3CDC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:42:29 experimental:27] Module <function get_embs_and_timestamps at 0x00000247BE3CDCA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-07 14:42:29 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-07 14:42:29 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-07 14:42:29 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-07 14:42:33 features:264] PADDING: 16
+[NeMo I 2022-05-07 14:42:33 features:281] STFT using torch
+[NeMo I 2022-05-07 14:42:35 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-07 14:42:35 features:264] PADDING: 0
+[NeMo I 2022-05-07 14:42:35 features:281] STFT using torch
+[NeMo W 2022-05-07 14:42:42 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
       warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
     
-[NeMo W 2022-05-07 13:49:01 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
-[NeMo W 2022-05-07 13:49:02 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+[NeMo W 2022-05-07 14:50:38 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-07 14:50:39 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
       warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
     
-[NeMo W 2022-05-07 13:49:03 experimental:27] Module <function get_argmin_mat at 0x000002A53096E160> is experimental, not ready for production and is not fully supported. Use at your own risk.
-[NeMo W 2022-05-07 13:49:03 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x000002A53096E1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
-[NeMo W 2022-05-07 13:49:03 experimental:27] Module <function parse_scale_configs at 0x000002A53096EC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
-[NeMo W 2022-05-07 13:49:03 experimental:27] Module <function get_embs_and_timestamps at 0x000002A53096ECA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
-[NeMo I 2022-05-07 13:49:03 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
-[NeMo I 2022-05-07 13:49:03 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
-[NeMo I 2022-05-07 13:49:03 common:728] Instantiating model from pre-trained checkpoint
-[NeMo I 2022-05-07 13:49:05 features:264] PADDING: 16
-[NeMo I 2022-05-07 13:49:05 features:281] STFT using torch
-[NeMo I 2022-05-07 13:49:06 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
-[NeMo I 2022-05-07 13:49:06 features:264] PADDING: 0
-[NeMo I 2022-05-07 13:49:06 features:281] STFT using torch
-[NeMo W 2022-05-07 13:49:14 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+[NeMo W 2022-05-07 14:50:40 experimental:27] Module <function get_argmin_mat at 0x0000028800AFE160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:50:40 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x0000028800AFE1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:50:40 experimental:27] Module <function parse_scale_configs at 0x0000028800AFEC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:50:40 experimental:27] Module <function get_embs_and_timestamps at 0x0000028800AFECA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-07 14:50:40 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-07 14:50:40 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-07 14:50:40 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-07 14:50:42 features:264] PADDING: 16
+[NeMo I 2022-05-07 14:50:42 features:281] STFT using torch
+[NeMo I 2022-05-07 14:50:43 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-07 14:50:43 features:264] PADDING: 0
+[NeMo I 2022-05-07 14:50:43 features:281] STFT using torch
+[NeMo W 2022-05-07 14:52:14 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-07 14:52:15 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-07 14:52:16 experimental:27] Module <function get_argmin_mat at 0x000001EF8D36E160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:52:16 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x000001EF8D36E1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:52:16 experimental:27] Module <function parse_scale_configs at 0x000001EF8D36EC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-07 14:52:16 experimental:27] Module <function get_embs_and_timestamps at 0x000001EF8D36ECA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-07 14:52:16 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-07 14:52:16 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-07 14:52:16 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-07 14:52:19 features:264] PADDING: 16
+[NeMo I 2022-05-07 14:52:19 features:281] STFT using torch
+[NeMo I 2022-05-07 14:52:22 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-07 14:52:22 features:264] PADDING: 0
+[NeMo I 2022-05-07 14:52:22 features:281] STFT using torch
+[NeMo W 2022-05-09 15:43:36 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-09 15:43:41 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-09 15:43:41 experimental:27] Module <function get_argmin_mat at 0x000001E39C3DE160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:43:41 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x000001E39C3DE1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:43:41 experimental:27] Module <function parse_scale_configs at 0x000001E39C3DEC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:43:41 experimental:27] Module <function get_embs_and_timestamps at 0x000001E39C3DECA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-09 15:43:43 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-09 15:43:43 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-09 15:43:43 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-09 15:43:44 features:264] PADDING: 16
+[NeMo I 2022-05-09 15:43:44 features:281] STFT using torch
+[NeMo I 2022-05-09 15:43:45 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-09 15:43:46 features:264] PADDING: 0
+[NeMo I 2022-05-09 15:43:46 features:281] STFT using torch
+[NeMo W 2022-05-09 15:43:54 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+      warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+    
+[NeMo W 2022-05-09 15:45:10 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-09 15:45:11 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-09 15:45:12 experimental:27] Module <function get_argmin_mat at 0x0000019827D6E160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:45:12 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x0000019827D6E1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:45:12 experimental:27] Module <function parse_scale_configs at 0x0000019827D6EC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:45:12 experimental:27] Module <function get_embs_and_timestamps at 0x0000019827D6ECA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-09 15:45:12 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-09 15:45:12 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-09 15:45:12 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-09 15:45:14 features:264] PADDING: 16
+[NeMo I 2022-05-09 15:45:14 features:281] STFT using torch
+[NeMo I 2022-05-09 15:45:15 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-09 15:45:16 features:264] PADDING: 0
+[NeMo I 2022-05-09 15:45:16 features:281] STFT using torch
+[NeMo W 2022-05-09 15:45:23 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+      warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+    
+[NeMo W 2022-05-09 15:52:05 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-09 15:52:09 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-09 15:52:10 experimental:27] Module <function get_argmin_mat at 0x00000145996500D0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:52:10 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x0000014599650160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:52:10 experimental:27] Module <function parse_scale_configs at 0x0000014599650B80> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-09 15:52:10 experimental:27] Module <function get_embs_and_timestamps at 0x0000014599650C10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-09 15:52:10 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-09 15:52:10 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-09 15:52:10 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-09 15:52:13 features:264] PADDING: 16
+[NeMo I 2022-05-09 15:52:13 features:281] STFT using torch
+[NeMo I 2022-05-09 15:52:15 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-09 15:52:15 features:264] PADDING: 0
+[NeMo I 2022-05-09 15:52:15 features:281] STFT using torch
+[NeMo W 2022-05-09 15:52:15 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+      warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+    
+[NeMo W 2022-05-10 11:06:03 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-10 11:06:09 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-10 11:06:11 experimental:27] Module <function get_argmin_mat at 0x000002658C8BF0D0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:06:11 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x000002658C8BF160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:06:11 experimental:27] Module <function parse_scale_configs at 0x000002658C8BFB80> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:06:11 experimental:27] Module <function get_embs_and_timestamps at 0x000002658C8BFC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-10 11:06:12 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 11:06:12 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-10 11:06:12 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-10 11:06:14 features:264] PADDING: 16
+[NeMo I 2022-05-10 11:06:14 features:281] STFT using torch
+[NeMo I 2022-05-10 11:06:16 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 11:06:16 features:264] PADDING: 0
+[NeMo I 2022-05-10 11:06:16 features:281] STFT using torch
+[NeMo W 2022-05-10 11:06:24 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+      warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+    
+[NeMo W 2022-05-10 11:09:01 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-10 11:09:03 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-10 11:09:04 experimental:27] Module <function get_argmin_mat at 0x000001DE86BFF160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:09:04 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x000001DE86BFF1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:09:04 experimental:27] Module <function parse_scale_configs at 0x000001DE86BFFC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:09:04 experimental:27] Module <function get_embs_and_timestamps at 0x000001DE86BFFCA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-10 11:09:04 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 11:09:04 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-10 11:09:04 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-10 11:09:06 features:264] PADDING: 16
+[NeMo I 2022-05-10 11:09:06 features:281] STFT using torch
+[NeMo I 2022-05-10 11:09:07 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 11:09:08 features:264] PADDING: 0
+[NeMo I 2022-05-10 11:09:08 features:281] STFT using torch
+[NeMo W 2022-05-10 11:09:16 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+      warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+    
+[NeMo W 2022-05-10 11:15:12 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-10 11:15:14 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-10 11:15:14 experimental:27] Module <function get_argmin_mat at 0x00000217903D00D0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:15:14 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x00000217903D0160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:15:14 experimental:27] Module <function parse_scale_configs at 0x00000217903D0B80> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:15:14 experimental:27] Module <function get_embs_and_timestamps at 0x00000217903D0C10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-10 11:15:15 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 11:15:15 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-10 11:15:15 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-10 11:15:16 features:264] PADDING: 16
+[NeMo I 2022-05-10 11:15:16 features:281] STFT using torch
+[NeMo I 2022-05-10 11:15:18 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 11:15:19 features:264] PADDING: 0
+[NeMo I 2022-05-10 11:15:19 features:281] STFT using torch
+[NeMo W 2022-05-10 11:15:23 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+      warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+    
+[NeMo W 2022-05-10 11:24:58 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-10 11:24:59 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-10 11:25:00 experimental:27] Module <function get_argmin_mat at 0x0000024AD10F7F70> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:25:00 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x0000024AD10FE040> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:25:00 experimental:27] Module <function parse_scale_configs at 0x0000024AD10FEA60> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 11:25:00 experimental:27] Module <function get_embs_and_timestamps at 0x0000024AD10FEAF0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-10 11:25:01 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 11:25:01 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-10 11:25:01 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-10 11:25:02 features:264] PADDING: 16
+[NeMo I 2022-05-10 11:25:02 features:281] STFT using torch
+[NeMo I 2022-05-10 11:25:03 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 11:25:04 features:264] PADDING: 0
+[NeMo I 2022-05-10 11:25:04 features:281] STFT using torch
+[NeMo W 2022-05-10 11:25:04 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+      warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+    
+[NeMo W 2022-05-10 12:05:47 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-10 12:05:51 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-10 12:05:52 experimental:27] Module <function get_argmin_mat at 0x00000276384800D0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 12:05:52 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x0000027638480160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 12:05:52 experimental:27] Module <function parse_scale_configs at 0x0000027638480B80> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 12:05:52 experimental:27] Module <function get_embs_and_timestamps at 0x0000027638480C10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-10 12:05:53 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 12:05:53 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-10 12:05:53 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-10 12:05:55 features:264] PADDING: 16
+[NeMo I 2022-05-10 12:05:55 features:281] STFT using torch
+[NeMo I 2022-05-10 12:05:56 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 12:05:56 features:264] PADDING: 0
+[NeMo I 2022-05-10 12:05:56 features:281] STFT using torch
+[NeMo W 2022-05-10 12:05:56 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+      warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+    
+[NeMo W 2022-05-10 12:09:22 optimizers:55] Apex was not found. Using the lamb or fused_adam optimizer will error out.
+[NeMo W 2022-05-10 12:09:24 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\pydub\utils.py:170: RuntimeWarning: Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work
+      warn("Couldn't find ffmpeg or avconv - defaulting to ffmpeg, but may not work", RuntimeWarning)
+    
+[NeMo W 2022-05-10 12:09:24 experimental:27] Module <function get_argmin_mat at 0x00000239B866E160> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 12:09:24 experimental:27] Module <function getMultiScaleCosAffinityMatrix at 0x00000239B866E1F0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 12:09:24 experimental:27] Module <function parse_scale_configs at 0x00000239B866EC10> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo W 2022-05-10 12:09:24 experimental:27] Module <function get_embs_and_timestamps at 0x00000239B866ECA0> is experimental, not ready for production and is not fully supported. Use at your own risk.
+[NeMo I 2022-05-10 12:09:25 cloud:56] Found existing object C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 12:09:25 cloud:62] Re-using file from: C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo
+[NeMo I 2022-05-10 12:09:25 common:728] Instantiating model from pre-trained checkpoint
+[NeMo I 2022-05-10 12:09:28 features:264] PADDING: 16
+[NeMo I 2022-05-10 12:09:28 features:281] STFT using torch
+[NeMo I 2022-05-10 12:09:29 save_restore_connector:154] Model EncDecCTCModel was successfully restored from C:\Users\alexm\.cache\torch\NeMo\NeMo_1.6.1\QuartzNet15x5Base-En\2b066be39e9294d7100fb176ec817722\QuartzNet15x5Base-En.nemo.
+[NeMo I 2022-05-10 12:09:29 features:264] PADDING: 0
+[NeMo I 2022-05-10 12:09:29 features:281] STFT using torch
+[NeMo W 2022-05-10 12:09:34 nemo_logging:349] C:\Users\alexm\AppData\Local\Programs\Python\Python39\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
       warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
     
