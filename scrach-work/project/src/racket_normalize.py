@@ -30,21 +30,21 @@ class InverseNormalizer:
 
 class RacketVerbalize:
     def verbalize(self, raw_tokens):
-        tokens = [entry['tokens'] for entry in raw_tokens]
+        tokens = [entry["tokens"] for entry in raw_tokens]
         stack = [[]]
         for token in tokens:
             top = stack[-1]
-            ty, text = token['type'], token['text']
-            if ty == 'atom':
-                top.append(token['text'])
-            elif ty == 'op' and text == 'of':
-                new = [] if token.get('group', '0') == '1' else [top.pop()]
+            ty, text = token["type"], token["text"]
+            if ty == "atom":
+                top.append(token["text"])
+            elif ty == "op" and text == "of":
+                new = [] if token.get("group", "0") == "1" else [top.pop()]
                 top.append(new)
                 stack.append(new)
-            elif ty == 'op' and text == 'next':
+            elif ty == "op" and text == "next":
                 stack.pop()
 
-        return '\n'.join(self.print_sexp(entry) for entry in stack[0])
+        return "\n".join(self.print_sexp(entry) for entry in stack[0])
 
     @staticmethod
     def print_sexp(sexp):
@@ -55,5 +55,5 @@ class RacketVerbalize:
 
 
 def racket_inverse_normalizer():
-    tagger = pynini.Fst.read(Path(__file__).parent / 'racket.fst')
+    tagger = pynini.Fst.read(Path(__file__).parent / "racket.fst")
     return InverseNormalizer(tagger, RacketVerbalize())

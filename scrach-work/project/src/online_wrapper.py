@@ -1,4 +1,5 @@
 import numpy as np
+
 # from nemo.utils.nemo_logging import Logger
 
 # nemo_logger = Logger()
@@ -50,11 +51,9 @@ class OnlineCodeTranscriber:
         self.search_state = self.beam_search(
             self.softmax(logits), self.search_state, space=True
         )
-        draft_state = self.beam_search(
-            self.softmax(draft_logits), self.search_state
-        )
+        draft_state = self.beam_search(self.softmax(draft_logits), self.search_state)
         text = draft_state.A[0]
-        #return text
+        # return text
         return self.normalizer.inverse_normalize(text)
 
     @staticmethod

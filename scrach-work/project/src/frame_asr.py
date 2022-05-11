@@ -125,7 +125,7 @@ class FrameASR:
 
     @staticmethod
     def _greedy_decoder(logits, vocab):
-        s = ''
+        s = ""
         for i in range(logits.shape[0]):
             s += vocab[np.argmax(logits[i])]
         return s
