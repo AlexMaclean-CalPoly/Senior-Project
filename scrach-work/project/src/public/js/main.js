@@ -16,6 +16,37 @@ class StreamWorkletNode extends AudioWorkletNode {
   }
 }
 
+function displayTranscript(transcript, parent) {
+  parent.textContent = "";
+  transcript.forEach((sexp) => {
+    wrapper = document.createElement("div");
+    parent.append(wrapper);
+    displaySexp(sexp, wrapper);
+  });
+}
+
+function displaySexp(sexp, parent) {
+  if (Array.isArray(sexp)) {
+    parent.append("(");
+    sexp.forEach((innerSexp, index) => {
+      if (index > 0) {
+        parent.append(" ")
+      }
+      displaySexp(innerSexp, parent)
+    });
+    parent.append(")");
+  } else {
+    parent.append(codeNode(sexp.text, sexp.type))
+  }
+}
+
+function codeNode(text, type) {
+  node = document.createElement("span");
+  node.textContent = text;
+  node.classList.add(type);
+  return node;
+}
+
 const recordButton = document.getElementById("record");
 const outputText = document.getElementById("output");
 const rawText = document.getElementById("raw");
@@ -32,7 +63,7 @@ socket.on("disconnect", () => {
 
 socket.on("transcript", (data) => {
   console.log(data);
-  outputText.textContent = data.transcript;
+  displayTranscript(data.transcript, outputText)
   rawText.textContent = data.raw;
 });
 

@@ -39,13 +39,10 @@ def racket_fst():
     string = string_fst(basic=basic)
     name = name_fst(cardinal=cardinal, symbol=symbol)
 
-    atom = token(
-        "atom",
-        pynini.union(
-            pynutil.add_weight(number, 0.01),
-            pynutil.add_weight(string, -0.1),
-            pynutil.add_weight(name, 0.03),
-        ),
+    atom = pynini.union(
+            pynutil.add_weight(token("number", number), 0.01),
+            pynutil.add_weight(token("string", string), -0.1),
+            pynutil.add_weight(token("name", name), 0.03),
     )
 
     op = pynini.union(
@@ -60,7 +57,7 @@ def racket_fst():
 
     graph = (
         maybe_delete_space
-        + pynutil.join(pynini.union(op, atom), delete_space)
+        + pynini.closure(pynutil.join(pynini.union(op, atom), delete_space), upper=1)
         + maybe_delete_space
     )
 
