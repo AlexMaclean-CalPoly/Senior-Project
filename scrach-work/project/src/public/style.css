@@ -2,3 +2,8 @@ body {
     background-color: #f5f5f5;
     margin: 3rem;
 }
+
+textarea {
+    margin: 1rem 0;
+    padding: 0.5rem;
+}

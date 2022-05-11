@@ -1,9 +1,9 @@
 import numpy as np
-from nemo.utils.nemo_logging import Logger
+# from nemo.utils.nemo_logging import Logger
 
-nemo_logger = Logger()
-nemo_logger.remove_stream_handlers()
-nemo_logger.add_file_handler('log.txt')
+# nemo_logger = Logger()
+# nemo_logger.remove_stream_handlers()
+# nemo_logger.add_file_handler('log.txt')
 
 from torch.utils.data import DataLoader
 
@@ -54,6 +54,7 @@ class OnlineCodeTranscriber:
             self.softmax(draft_logits), self.search_state
         )
         text = draft_state.A[0]
+        #return text
         return self.normalizer.inverse_normalize(text)
 
     @staticmethod

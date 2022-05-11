@@ -1,7 +1,7 @@
 console.log("loaded main.js");
 
 TARGET_SAMPLE_RATE = 16000;
-TARGET_CHUNK_LENGTH = 0.1;
+TARGET_CHUNK_LENGTH = 1;
 
 constraints = {
   audio: true,
@@ -20,20 +20,18 @@ const recordButton = document.getElementById("record");
 const outputText = document.getElementById("output");
 
 const socket = io.connect();
-const enc = new TextDecoder("utf-8");
 
 socket.on("connection", () => {
-  console.log("connected");
-})
+  console.log("connection");
+});
 
 socket.on("disconnect", () => {
-  console.log("disconnected");
-})
+  console.log("disconnect");
+});
 
 socket.on("transcript", (data) => {
-  text = enc.decode(data);
-  outputText.textContent = text;
-  console.log(text);
+  console.log(data);
+  outputText.textContent = data.transcript;
 });
 
 navigator.mediaDevices
