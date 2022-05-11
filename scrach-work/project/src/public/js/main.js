@@ -18,6 +18,7 @@ class StreamWorkletNode extends AudioWorkletNode {
 
 const recordButton = document.getElementById("record");
 const outputText = document.getElementById("output");
+const rawText = document.getElementById("raw");
 
 const socket = io.connect();
 
@@ -32,6 +33,7 @@ socket.on("disconnect", () => {
 socket.on("transcript", (data) => {
   console.log(data);
   outputText.textContent = data.transcript;
+  rawText.textContent = data.raw;
 });
 
 navigator.mediaDevices

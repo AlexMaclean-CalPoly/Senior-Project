@@ -2,8 +2,9 @@ FROM python:3.7-buster
 
 RUN apt-get update
 RUN apt-get install --yes libsndfile1 ffmpeg
-RUN pip install Cython nemo_toolkit[all]
-RUN pip install eventlet python-socketio
+
+COPY requirements.txt ./requirements.txt
+RUN pip install -r requirements.txt
 
 WORKDIR /usr/src/app
 

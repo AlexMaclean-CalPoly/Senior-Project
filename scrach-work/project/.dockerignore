@@ -3,3 +3,5 @@ docker-commands
 .gitignore
 racket.fst
 __pycache__
+src/racket_model/output
+repos.json

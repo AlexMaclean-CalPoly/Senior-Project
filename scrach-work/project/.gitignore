@@ -1,2 +1,4 @@
 log.txt
 racket.fst
+src/racket_model/output
+src/racket_model/repos.json

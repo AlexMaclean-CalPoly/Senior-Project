@@ -53,8 +53,7 @@ class OnlineCodeTranscriber:
         )
         draft_state = self.beam_search(self.softmax(draft_logits), self.search_state)
         text = draft_state.A[0]
-        # return text
-        return self.normalizer.inverse_normalize(text)
+        return (self.normalizer.inverse_normalize(text), text)
 
     @staticmethod
     def softmax(logits):

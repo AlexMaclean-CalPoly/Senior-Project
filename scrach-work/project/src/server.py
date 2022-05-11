@@ -26,8 +26,8 @@ def connect(sid, environ):
 @sio.event
 def audio_in(sid, data):
     signal = np.frombuffer(data, dtype=np.int16)
-    text = transcriber.transcribe(signal)
-    sio.emit("transcript", {"transcript": text, "i": int(signal[0])})
+    (text, raw) = transcriber.transcribe(signal)
+    sio.emit("transcript", {"transcript": text, "raw": raw})
 
 
 @sio.event

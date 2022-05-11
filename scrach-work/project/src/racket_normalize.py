@@ -2,7 +2,7 @@ import pynini
 from nemo_text_processing.text_normalization.token_parser import TokenParser
 from pathlib import Path
 
-# A
+
 class InverseNormalizer:
     def __init__(self, tagger: pynini.FstLike, verbalizer):
         self.tagger = tagger
@@ -49,7 +49,7 @@ class RacketVerbalize:
     @staticmethod
     def print_sexp(sexp):
         if isinstance(sexp, list):
-            return f'({" ".join(RacketVerbalize.print_sexp(entry) for entry in sexp)})'
+            return ['('] + [f for entry in sexp for f in RacketVerbalize.print_sexp(entry)] + [')']
         else:
             return sexp
 
