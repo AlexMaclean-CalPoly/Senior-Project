@@ -2,13 +2,12 @@ import hashlib
 import json
 import os
 import pathlib
+import requests
 import shutil
 import subprocess
-from typing import Tuple, List
 import tempfile
-
-import requests
 from tqdm import tqdm
+from typing import Tuple, List
 
 LANG = ("racket", ".rkt")
 NUM_REPOS = 100
@@ -90,5 +89,5 @@ def aggregate_files(directory, predicate, outfile: pathlib.Path):
                     outfile.write(os.linesep.encode())
 
 
-if __name__ == "__main__":  # equals - equals or is quote, underbar
+if __name__ == "__main__":
     main(LANG, NUM_REPOS, pathlib.Path(OUT_DIR))

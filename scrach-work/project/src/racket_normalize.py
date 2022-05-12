@@ -1,4 +1,3 @@
-from lib2to3.pgen2 import token
 import pynini
 from nemo_text_processing.text_normalization.token_parser import TokenParser
 from pathlib import Path
@@ -31,13 +30,16 @@ class InverseNormalizer:
     @staticmethod
     def select_tag(lattice: pynini.FstLike, text) -> str:
         try:
-            tagged_text = pynini.shortestpath(lattice, nshortest=1, unique=True).string()
+            tagged_text = pynini.shortestpath(
+                lattice, nshortest=1, unique=True
+            ).string()
             return tagged_text
         except Exception:
-            print(f'AAAAAAA {text}')
+            print(f"AAAAAAA {text}")
 
 
-ATOMS = {'name', 'string', 'number'}
+ATOMS = {"name", "string", "number"}
+
 
 class RacketVerbalize:
     def __call__(self, raw_tokens):
@@ -47,7 +49,7 @@ class RacketVerbalize:
             top = stack[-1]
             ty, text = token["type"], token["text"]
             if ty in ATOMS:
-                top.append({'text': self.format_atom_text(text, ty), 'type': ty})
+                top.append({"text": self.format_atom_text(text, ty), "type": ty})
             elif ty == "op" and text == "of":
                 new = [] if token.get("group", "0") == "1" else [top.pop()]
                 top.append(new)
@@ -57,14 +59,13 @@ class RacketVerbalize:
                     stack.pop()
 
         return stack[0]
-        #return "\n".join(self.print_sexp(entry) for entry in stack[0])
+        # return "\n".join(self.print_sexp(entry) for entry in stack[0])
 
     @staticmethod
     def format_atom_text(text, ty):
         if ty == "string":
             return f'"{text}"'
         return text
-
 
     @staticmethod
     def print_sexp(sexp):

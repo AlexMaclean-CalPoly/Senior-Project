@@ -1,18 +1,11 @@
 import numpy as np
-
-# from nemo.utils.nemo_logging import Logger
-
-# nemo_logger = Logger()
-# nemo_logger.remove_stream_handlers()
-# nemo_logger.add_file_handler('log.txt')
-
+import sys
 from torch.utils.data import DataLoader
 
 from beam_search import BeamSearch
 from frame_asr import FrameASR, AudioDataLayer, get_asr_model
 from racket_normalize import racket_inverse_normalizer
 
-import sys
 
 SAMPLE_RATE = 16000  # sample rate, Hz
 
@@ -53,7 +46,7 @@ class OnlineCodeTranscriber:
         )
         draft_state = self.beam_search(self.softmax(draft_logits), self.search_state)
         text = draft_state.A[0]
-        return (self.normalizer(text), text)
+        return self.normalizer(text), text
 
     @staticmethod
     def softmax(logits):

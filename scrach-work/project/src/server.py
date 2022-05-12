@@ -1,10 +1,8 @@
 import eventlet
+import numpy as np
 import socketio
 
-import numpy as np
-
 from online_wrapper import OnlineCodeTranscriber
-
 
 sio = socketio.Server()
 app = socketio.WSGIApp(

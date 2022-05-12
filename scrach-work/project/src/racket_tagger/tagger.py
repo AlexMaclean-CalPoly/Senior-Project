@@ -1,7 +1,4 @@
 import csv
-from pathlib import Path
-
-
 import pynini
 from nemo_text_processing.inverse_text_normalization.en.taggers.cardinal import (
     CardinalFst,
@@ -9,6 +6,7 @@ from nemo_text_processing.inverse_text_normalization.en.taggers.cardinal import 
 from nemo_text_processing.inverse_text_normalization.en.taggers.decimal import (
     DecimalFst,
 )
+from pathlib import Path
 from pynini.lib import pynutil
 from pynini.lib import utf8
 
@@ -40,9 +38,9 @@ def racket_fst():
     name = name_fst(cardinal=cardinal, symbol=symbol)
 
     atom = pynini.union(
-            pynutil.add_weight(token("number", number), 0.01),
-            pynutil.add_weight(token("string", string), -0.1),
-            pynutil.add_weight(token("name", name), 0.03),
+        pynutil.add_weight(token("number", number), 0.01),
+        pynutil.add_weight(token("string", string), -0.1),
+        pynutil.add_weight(token("name", name), 0.03),
     )
 
     op = pynini.union(

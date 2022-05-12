@@ -14,11 +14,10 @@ Based off of: https://github.com/corticph/prefix-beam-search/blob/master/prefix_
             string: The decoded CTC output.
 """
 
+import numpy as np
 import re
 from collections import Counter
 from typing import Callable, Optional
-
-import numpy as np
 
 
 class SearchState:
@@ -33,7 +32,6 @@ class SearchState:
 
 
 class BeamSearch:
-
     START_STATE: SearchState = SearchState(Pb={"": 1}, Pnb={"": 0}, A=[""])
 
     def __init__(
