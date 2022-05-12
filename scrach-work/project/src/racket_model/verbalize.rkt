@@ -23,7 +23,7 @@
   (define sexp (safe-read file))
   (cond
     [(equal? sexp eof) ""]
-    [else (begin (print (verbalize sexp)) (verbalize-all file))]))
+    [else (format "~a ~a" (verbalize sexp) (verbalize-all file))]))
 
 
 (define (safe-read file)

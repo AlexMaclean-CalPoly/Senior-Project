@@ -10,7 +10,7 @@ class InverseNormalizer:
         self.parser = TokenParser()
         self.verbalizer = verbalizer
 
-    def inverse_normalize(self, text: str, verbose: bool = False) -> str:
+    def __call__(self, text: str, verbose: bool = False) -> str:
         lattice = self.find_tags(text)
         tagged_text = self.select_tag(lattice, text)
         if verbose:

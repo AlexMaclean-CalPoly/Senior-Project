@@ -39,7 +39,7 @@ class OnlineCodeTranscriber:
         )
 
         self.beam_search = BeamSearch(lambda x: 1, list(cfg.decoder.vocabulary))
-        self.search_state = BeamSearch.start_state()
+        self.search_state = BeamSearch.START_STATE
 
         self.normalizer = racket_inverse_normalizer()
 
@@ -53,7 +53,7 @@ class OnlineCodeTranscriber:
         )
         draft_state = self.beam_search(self.softmax(draft_logits), self.search_state)
         text = draft_state.A[0]
-        return (self.normalizer.inverse_normalize(text), text)
+        return (self.normalizer(text), text)
 
     @staticmethod
     def softmax(logits):

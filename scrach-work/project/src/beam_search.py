@@ -16,11 +16,16 @@ Based off of: https://github.com/corticph/prefix-beam-search/blob/master/prefix_
 
 import re
 from collections import Counter
+from typing import Callable, Optional
 
 import numpy as np
 
 
 class SearchState:
+    Pb: Counter[str]
+    Pnb: Counter[str]
+    A: Optional[list[str]]
+
     def __init__(self, Pb=None, Pnb=None, A=None):
         self.Pb = Counter(Pb)
         self.Pnb = Counter(Pnb)
@@ -28,7 +33,18 @@ class SearchState:
 
 
 class BeamSearch:
-    def __init__(self, lm, alphabet, beam_width=25, alpha=0.30, beta=5, prune=0.001):
+
+    START_STATE: SearchState = SearchState(Pb={"": 1}, Pnb={"": 0}, A=[""])
+
+    def __init__(
+        self,
+        lm: Callable[[str], float],
+        alphabet: list[str],
+        beam_width: int = 25,
+        alpha: float = 0.30,
+        beta: float = 5,
+        prune: float = 0.001,
+    ):
         self.alphabet = alphabet + ["_"]
         self.lm = lm
         self.beam_width = beam_width
@@ -36,7 +52,9 @@ class BeamSearch:
         self.beta = beta
         self.prune = prune
 
-    def __call__(self, ctc: np.ndarray, state: SearchState, space=False) -> SearchState:
+    def __call__(
+        self, ctc: np.ndarray, state: SearchState, space: bool = False
+    ) -> SearchState:
         initial = state
         for ctc_t in ctc:
             state = self._process(ctc_t, state)
@@ -46,62 +64,46 @@ class BeamSearch:
             state = self._process(space, state)
         return state
 
-    def _process(self, ctc_t, state: SearchState) -> SearchState:
-        next_state = SearchState()
-        pruned_alphabet = [
-            (i, self.alphabet[i]) for i in np.where(ctc_t > self.prune)[0]
-        ]
+    def _process(self, t: np.ndarray, prev: SearchState) -> SearchState:
+        nxt = SearchState()
+        print(np.where(t > self.prune))
+        pruned_alphabet = [(i, self.alphabet[i]) for i in np.where(t > self.prune)[0]]
 
-        for prefix in state.A:
-            for ch_i, chr in pruned_alphabet:
+        for l in prev.A:
+            for ch_i, c in pruned_alphabet:
+                p_c = t[ch_i]
 
-                if chr == "_":
-                    next_state.Pb[prefix] += ctc_t[-1] * (
-                        state.Pb[prefix] + state.Pnb[prefix]
-                    )
+                if c == "_":
+                    nxt.Pb[l] += p_c * (prev.Pb[l] + prev.Pnb[l])
 
                 else:
-                    prefix_new = prefix + chr
-                    if len(prefix) > 0 and chr == prefix[-1]:
-                        next_state.Pnb[prefix_new] += ctc_t[ch_i] * state.Pb[prefix]
-                        next_state.Pnb[prefix] += ctc_t[ch_i] * state.Pnb[prefix]
-                    elif len(prefix.replace(" ", "")) > 0 and chr == " ":
-                        lm_prob = self.lm(prefix_new) ** self.alpha
-                        next_state.Pnb[prefix_new] += (
-                            lm_prob
-                            * ctc_t[ch_i]
-                            * (state.Pb[prefix] + state.Pnb[prefix])
-                        )
+                    l_new = l + c
+                    if len(l) > 0 and c == l[-1]:
+                        nxt.Pnb[l_new] += p_c * prev.Pb[l]
+                        nxt.Pnb[l] += p_c * prev.Pnb[l]
+                    elif len(l.replace(" ", "")) > 0 and c == " ":
+                        lm_prob = self.lm(l_new) ** self.alpha
+                        nxt.Pnb[l_new] += lm_prob * p_c * (prev.Pb[l] + prev.Pnb[l])
                     else:
-                        next_state.Pnb[prefix_new] += ctc_t[ch_i] * (
-                            state.Pb[prefix] + state.Pnb[prefix]
-                        )
+                        nxt.Pnb[l_new] += p_c * (prev.Pb[l] + prev.Pnb[l])
 
-                    if prefix_new not in state.A:
-                        next_state.Pb[prefix_new] += ctc_t[-1] * (
-                            state.Pb[prefix_new] + state.Pnb[prefix_new]
-                        )
-                        next_state.Pnb[prefix_new] += (
-                            ctc_t[ch_i] * state.Pnb[prefix_new]
-                        )
+                    if l_new not in prev.A:
+                        nxt.Pb[l_new] += t[-1] * (prev.Pb[l_new] + prev.Pnb[l_new])
+                        nxt.Pnb[l_new] += p_c * prev.Pnb[l_new]
 
-        A_next = next_state.Pb + next_state.Pnb
-        next_state.A = [
+        A_next = nxt.Pb + nxt.Pnb
+        nxt.A = [
             item[0]
             for item in sorted(A_next.items(), key=self._sorter, reverse=True)[
                 : self.beam_width
             ]
         ]
-        return next_state
+        return nxt
 
-    def _sorter(self, item):
+    def _sorter(self, item: tuple[str, int]):
         l, score = item
         return score * (len(self._get_words(l)) + 1) ** self.beta
 
     @staticmethod
-    def _get_words(l):
+    def _get_words(l: str) -> list:
         return re.findall(r"\w+[\s|>]", l)
-
-    @staticmethod
-    def start_state():
-        return SearchState(Pb={"": 1}, Pnb={"": 0}, A=[""])

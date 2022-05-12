@@ -1,1 +1,2 @@
-docker build -t senior-project:latest -f Dockerfile . && docker container run -p 3000:3000 senior-project:latest
+docker build -t senior-project:latest -f Dockerfile . &&
+docker container run -p 3000:3000 senior-project:latest
