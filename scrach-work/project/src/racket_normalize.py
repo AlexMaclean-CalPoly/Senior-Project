@@ -51,7 +51,7 @@ class RacketVerbalize:
             if ty in ATOMS:
                 top.append({"text": self.format_atom_text(text, ty), "type": ty})
             elif ty == "op" and text == "of":
-                new = [] if token.get("group", "0") == "1" else [top.pop()]
+                new = [] if token.get("group", "0") == "1" or len(top) == 0 else [top.pop()]
                 top.append(new)
                 stack.append(new)
             elif ty == "op" and text == "next":
@@ -64,7 +64,7 @@ class RacketVerbalize:
     @staticmethod
     def format_atom_text(text, ty):
         if ty == "string":
-            return f'"{text}"'
+            return '""' if text is None else f'"{text}"'
         return text
 
     @staticmethod

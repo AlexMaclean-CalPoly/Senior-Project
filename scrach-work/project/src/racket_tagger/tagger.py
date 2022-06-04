@@ -1,4 +1,6 @@
 import csv
+from pathlib import Path
+
 import pynini
 from nemo_text_processing.inverse_text_normalization.en.taggers.cardinal import (
     CardinalFst,
@@ -6,7 +8,6 @@ from nemo_text_processing.inverse_text_normalization.en.taggers.cardinal import 
 from nemo_text_processing.inverse_text_normalization.en.taggers.decimal import (
     DecimalFst,
 )
-from pathlib import Path
 from pynini.lib import pynutil
 from pynini.lib import utf8
 
@@ -48,14 +49,14 @@ def racket_fst():
         token("op", pynini.accep(NEXT)),
         basic_token(
             "op",
-            pynini.closure(pynini.cross(GROUP + delete_space, 'group: "1" '), upper=1)
+            maybe(pynini.cross(GROUP + delete_space, 'group: "1" '))
             + pynini.cross(OF, f'text: "{OF}"'),
         ),
     )
 
     graph = (
         maybe_delete_space
-        + pynini.closure(pynutil.join(pynini.union(op, atom), delete_space), upper=1)
+        + maybe(pynutil.join(pynini.union(op, atom), delete_space))
         + maybe_delete_space
     )
 
@@ -86,34 +87,36 @@ def words_to_fst(words):
 
 
 def number_fst(cardinal):
-    decimal_graph = DecimalFst(cardinal).graph
-
-    optional_minus_graph = pynini.closure(
-        pynini.cross(pynini.union("minus", "negative"), "-") + delete_space, 0, 1
+    return (
+        maybe(pynini.cross(pynini.union("minus", "negative"), "-") + delete_space)
+        + cardinal.graph_no_exception
+        + maybe(
+            delete_space
+            + pynini.cross("point", ".")
+            + delete_space
+            + DecimalFst(cardinal).graph
+        )
     )
-
-    optional_decimal_graph = pynini.closure(
-        delete_space + pynini.cross("point", ".") + delete_space + decimal_graph, 0, 1
-    )
-
-    return optional_minus_graph + cardinal.graph_no_exception + optional_decimal_graph
 
 
 def name_fst(cardinal: CardinalFst, symbol):
-    cardinal_graph = cardinal.graph_no_exception
-    no_delimit = pynutil.join(pynini.union(cardinal_graph, symbol), delete_space)
-    word = pynutil.add_weight(pynini.closure(NOT_SPACE, lower=1), 1.1)
+    no_delimit = pynutil.join(
+        pynini.union(cardinal.graph_no_exception, symbol), delete_space
+    )
+    word = pynutil.add_weight(
+        exclude(
+            pynini.closure(NOT_SPACE, lower=1),
+            pynini.union(OF, GROUP, AND, NEXT),
+        ),
+        1.1,
+    )
     undelimited = pynutil.add_weight(
         pynini.union(
             no_delimit,
             (
-                pynini.closure(no_delimit + delete_space, upper=1)
+                maybe(no_delimit + delete_space)
                 + word
-                + pynini.closure(
-                    delete_space
-                    + no_delimit
-                    + pynini.closure(delete_space + word, upper=1)
-                )
+                + pynini.closure(delete_space + no_delimit + maybe(delete_space + word))
             ),
         ),
         0.1,
@@ -125,30 +128,22 @@ def name_fst(cardinal: CardinalFst, symbol):
 
 
 def basic_fst(number, symbol):
-    word_graph = pynini.closure(NOT_SPACE, lower=1)
-
-    token = (
+    return (
         pynutil.add_weight(number, -0.1)
         | pynutil.add_weight(symbol, -0.1)
-        | pynutil.add_weight(word_graph, 0)
-    )
-
-    return token.optimize()
+        | pynutil.add_weight(pynini.closure(NOT_SPACE, lower=1), 0)
+    ).optimize()
 
 
 def string_fst(basic):
-    token_graph = (pynini.project(basic, "input") - NEXT) @ basic
-
-    graph = token_graph + pynini.closure(delete_extra_space + token_graph)
-    graph = (
+    return (
         pynutil.delete(STRING + delete_space + OF)
-        + delete_space
-        + graph
-        + delete_space
-        + pynutil.delete(NEXT)
-    )
-
-    return graph.optimize()
+        + maybe(
+            delete_space
+            + pynutil.join(exclude(basic, NEXT), delete_extra_space)
+            + maybe(delete_space + pynutil.delete(NEXT))
+        )
+    ).optimize()
 
 
 def token(type, fst):
@@ -173,8 +168,17 @@ def remove_and(cardinal: CardinalFst):
     return cardinal
 
 
+def exclude(fst, ex):
+    return (pynini.project(fst, "input") - ex) @ fst
+
+
+def maybe(fst):
+    return pynini.closure(fst, upper=1)
+
+
 if __name__ == "__main__":
     print("Racket FST:")
     graph = racket_fst()
     graph.write("racket.fst")
     print("done")
+    pynini.Fst.read("a")

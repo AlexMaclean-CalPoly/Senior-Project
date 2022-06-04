@@ -8,6 +8,14 @@
   (match sexp
     [(? string?) (format "string of ~a next" sexp)]
     [(or (? number?) (? symbol?) (? boolean?) (? keyword?)) (~a sexp)]
+    [(? regexp?)
+     (let ([rstr (~a sexp)])
+     (format "regexp of string of ~a next next"
+             (substring rstr 4 (string-length rstr))))]
+    [(? pregexp?)
+     (let ([rstr (~a sexp)])
+     (format "pregexp of string of ~a next next"
+             (substring rstr 4 (string-length rstr))))]
     ['() "group of next"]
     [(? list?)
      #:when group?
@@ -16,14 +24,13 @@
      (format "~a of ~a next"
              (verbalize f)
              (string-join (map verbalize args) " and "))]
-    [_ (format "<AAA ~a AAA>" sexp)]
-    ))
+    [_ ""]))
 
 (define (verbalize-all file)
   (define sexp (safe-read file))
   (cond
     [(equal? sexp eof) ""]
-    [else (format "~a ~a" (verbalize sexp) (verbalize-all file))]))
+    [else (format "~a\n~a" (verbalize sexp) (verbalize-all file))]))
 
 
 (define (safe-read file)
