@@ -1,8 +1,5 @@
 #lang racket
 
-(define f (open-input-file "output/0a98082deb09707a710455ad72e139da970fae0a482c5db466d7c9e11947956b.rkt"))
-
-
 
 (define (verbalize sexp [group? #f])
   (match sexp
@@ -21,10 +18,16 @@
      #:when group?
      (format "group of ~a next" (string-join (map verbalize sexp) " and "))]
     [(cons f (? list? args))
-     (format "~a of ~a next"
-             (verbalize f)
-             (string-join (map verbalize args) " and "))]
+     (let ([g? (group-syntax? sexp)])
+       (format "~a of ~a next"
+               (verbalize f)
+               (string-join (map (λ (a) (verbalize a g?)) args) " and ")))]
     [_ ""]))
+
+(define (group-syntax? sexp)
+  (match sexp
+    [(cons (or 'match 'let 'cond 'struct) _) #t]
+    [_ #f]))
 
 (define (verbalize-all file)
   (define sexp (safe-read file))
@@ -38,4 +41,20 @@
       ([exn:fail? (lambda (exn) (begin (read file) (safe-read file)))])
     (read file)))
 
-(verbalize-all f)
+(define (main)
+  (for ([p (directory-list #:build? #t)])
+    (when (string-suffix? (path->string p) ".rkt")
+      (define f (open-input-file p))
+      (displayln p)
+      (define text (verbalize-all f))
+      (displayln text)
+      (define outfile (open-output-file (path-replace-extension p #".txt") #:exists 'replace))
+      (display text outfile)
+      (close-input-port f)
+      (close-output-port outfile)
+      )
+
+    )
+  )
+
+(main)

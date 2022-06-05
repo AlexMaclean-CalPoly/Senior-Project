@@ -181,4 +181,3 @@ if __name__ == "__main__":
     graph = racket_fst()
     graph.write("racket.fst")
     print("done")
-    pynini.Fst.read("a")

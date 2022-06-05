@@ -21,10 +21,6 @@ from typing import Callable, Optional
 
 
 class SearchState:
-    Pb: Counter[str]
-    Pnb: Counter[str]
-    A: Optional[list[str]]
-
     def __init__(self, Pb=None, Pnb=None, A=None):
         self.Pb = Counter(Pb)
         self.Pnb = Counter(Pnb)
@@ -37,7 +33,7 @@ class BeamSearch:
     def __init__(
         self,
         lm: Callable[[str], float],
-        alphabet: list[str],
+        alphabet,
         beam_width: int = 25,
         alpha: float = 0.30,
         beta: float = 5,
@@ -98,7 +94,7 @@ class BeamSearch:
         ]
         return nxt
 
-    def _sorter(self, item: tuple[str, int]):
+    def _sorter(self, item: tuple):
         l, score = item
         return score * (len(self._get_words(l)) + 1) ** self.beta
 
