@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader
 from beam_search import BeamSearch
 from frame_asr import FrameASR, AudioDataLayer, get_asr_model
 from racket_normalize import racket_inverse_normalizer
+import kenlm
 
 
 SAMPLE_RATE = 16000  # sample rate, Hz
@@ -31,7 +32,8 @@ class OnlineCodeTranscriber:
             frame_overlap=1,
         )
 
-        self.beam_search = BeamSearch(lambda x: 1, list(cfg.decoder.vocabulary))
+        self.lm = kenlm.Model('racket_model/racket.arpa')
+        self.beam_search = BeamSearch(lambda x: self.lm.score(x), list(cfg.decoder.vocabulary))
         self.search_state = BeamSearch.START_STATE
 
         self.normalizer = racket_inverse_normalizer()

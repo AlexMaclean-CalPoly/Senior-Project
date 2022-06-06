@@ -14,6 +14,10 @@ class StreamWorkletNode extends AudioWorkletNode {
       processorOptions: { targetChunkLength },
     });
   }
+
+  set onaudio(callback) {
+    this.port.onmessage = callback;
+  }
 }
 
 function displayTranscript(transcript, parent) {

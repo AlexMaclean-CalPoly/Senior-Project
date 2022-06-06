@@ -5,3 +5,4 @@ src/racket_model/repos.json
 venv
 
 *.bak
+__pycache__

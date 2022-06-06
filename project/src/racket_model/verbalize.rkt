@@ -42,17 +42,18 @@
     (read file)))
 
 (define (main)
-  (for ([p (directory-list #:build? #t)])
+  (for ([p (directory-list "./output" #:build? #t)])
+    (with-handlers
+      ([exn:fail? (lambda (exn) (displayln exn))])
     (when (string-suffix? (path->string p) ".rkt")
       (define f (open-input-file p))
       (displayln p)
       (define text (verbalize-all f))
-      (displayln text)
       (define outfile (open-output-file (path-replace-extension p #".txt") #:exists 'replace))
       (display text outfile)
       (close-input-port f)
       (close-output-port outfile)
-      )
+      ))
 
     )
   )
