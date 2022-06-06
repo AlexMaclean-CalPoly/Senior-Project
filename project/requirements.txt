@@ -2,3 +2,4 @@ Cython
 nemo_toolkit[all]
 eventlet
 python-socketio
+kenlm

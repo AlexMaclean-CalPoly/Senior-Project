@@ -32,7 +32,7 @@ class OnlineCodeTranscriber:
             frame_overlap=1,
         )
 
-        self.lm = kenlm.Model('racket_model/racket.arpa')
+        self.lm = kenlm.Model('./racket_model/racket.arpa')
         self.beam_search = BeamSearch(lambda x: self.lm.score(x), list(cfg.decoder.vocabulary))
         self.search_state = BeamSearch.START_STATE
 
